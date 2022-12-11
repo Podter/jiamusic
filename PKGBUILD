@@ -29,7 +29,7 @@ package(){
   cd build
   make DESTDIR="$pkgdir" install
 
-  patch $pkgdir/usr/share/applications/org.kde.elisa.desktop desktop.patch
+  patch $pkgdir/usr/share/applications/org.kde.elisa.desktop $srcdir/desktop.patch
   mkdir -p $pkgdir/usr/share/icons/cvm-ui-icons
   cp $srcdir/music.png $pkgdir/usr/share/icons/cvm-ui-icons
 }
