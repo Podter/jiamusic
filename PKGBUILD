@@ -9,8 +9,8 @@ depends=(kirigami2 kdeclarative baloo)
 makedepends=(git python extra-cmake-modules kdoctools)
 provides=(elisa)
 conflicts=(elisa)
-source=("elisa-22.12.0.tar.xz::https://download.kde.org/stable/release-service/22.12.0/src/elisa-22.12.0.tar.xz")
-sha512sums=('SKIP')
+source=("elisa-22.12.0.tar.xz::https://download.kde.org/stable/release-service/22.12.0/src/elisa-22.12.0.tar.xz" "desktop.patch" "music.png")
+sha512sums=('SKIP' 'SKIP' 'SKIP')
 
 prepare() {
   mkdir -p build
@@ -28,4 +28,8 @@ build() {
 package(){
   cd build
   make DESTDIR="$pkgdir" install
+
+  patch $pkgdir/usr/share/applications/org.kde.elisa.desktop desktop.patch
+  mkdir -p $pkgdir/usr/share/icons/cvm-ui-icons
+  cp $srcdir/music.png $pkgdir/usr/share/icons/cvm-ui-icons
 }
