@@ -35,10 +35,10 @@ export default function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <button className="btn btn-ghost normal-case text-xl gap-2">
+        <Link to="/" className="btn btn-ghost normal-case text-xl gap-2">
           <img src="/jiamusic.png" alt="JIΛmusic Logo" className="h-6 w-6" />
           JIΛmusic
-        </button>
+        </Link>
       </div>
       <div className="navbar-end">
         <div className="form-control">
