@@ -1,13 +1,13 @@
-import { Menu, Search } from "lucide-react";
+import { Search20Filled, LineHorizontal320Filled } from "@fluentui/react-icons";
 
 export default function Navbar() {
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-300/20 backdrop-blur-xl shadow-sm fixed z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div className="tooltip tooltip-bottom" data-tip="Menu">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
-              <Menu className="h-5 w-5" />
+              <LineHorizontal320Filled />
             </label>
           </div>
           <ul
@@ -37,16 +37,16 @@ export default function Navbar() {
       </div>
       <div className="navbar-end">
         <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered"
-          />
-        </div>
-        <div className="tooltip tooltip-bottom" data-tip="Search">
-          <button className="btn btn-ghost btn-circle">
-            <Search className="h-5 w-5" />
-          </button>
+          <div className="input-group">
+            <input
+              type="text"
+              placeholder="Search…"
+              className="input input-bordered"
+            />
+            <button className="btn btn-square">
+              <Search20Filled />
+            </button>
+          </div>
         </div>
       </div>
     </div>

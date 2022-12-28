@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply scrollbar-track-base-200 scrollbar-thumb-primary scrollbar-thin;
+}

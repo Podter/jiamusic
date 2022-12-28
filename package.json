@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@fluentui/react-icons": "^2.0.190",
     "@tauri-apps/cli": "^1.2.2",
     "@types/node": "^18.7.10",
     "@types/react": "^18.0.15",
@@ -26,9 +27,9 @@
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "daisyui": "^2.46.0",
-    "lucide-react": "^0.105.0-alpha.4",
     "pocketbase": "^0.9.1",
     "postcss": "^8.4.20",
+    "tailwind-scrollbar": "^2.1.0",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.6.4",
     "vite": "^4.0.0"
