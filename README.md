@@ -1,5 +1,3 @@
-# jiamusic
-
 <p align="center">
     <img alt="logo" src="https://raw.githubusercontent.com/jiafeitech/jiamusic/main/src-tauri/icons/128x128%402x.png">
 </p>
