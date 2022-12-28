@@ -1,6 +1,11 @@
 import { Search20Filled, LineHorizontal320Filled } from "@fluentui/react-icons";
+import { useSongList } from "../contexts/SongListContext";
+import { exit } from "@tauri-apps/api/process";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const songList = useSongList();
+
   return (
     <div className="navbar bg-base-300/20 backdrop-blur-xl shadow-sm fixed z-50">
       <div className="navbar-start">
@@ -15,15 +20,15 @@ export default function Navbar() {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Home</a>
+              <Link to="/">Home</Link>
             </li>
-            <li>
+            <li onClick={songList.refresh}>
               <a>Refresh</a>
             </li>
             <li>
-              <a>Settings</a>
+              <Link to="/settings">Settings</Link>
             </li>
-            <li>
+            <li onClick={() => exit(0)}>
               <a>Exit</a>
             </li>
           </ul>
@@ -43,9 +48,9 @@ export default function Navbar() {
               placeholder="Search…"
               className="input input-bordered"
             />
-            <button className="btn btn-square">
+            <Link to="/search" className="btn btn-square">
               <Search20Filled />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

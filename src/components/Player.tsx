@@ -144,6 +144,7 @@ export default function Player() {
         max={duration}
         value={currentTime}
         className="range range-primary range-2xs w-screen bottom-0 fixed z-40 rounded-none"
+        readOnly={true}
       />
       <audio
         ref={audio}

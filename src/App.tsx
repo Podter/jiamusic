@@ -1,23 +1,21 @@
-import { useSongList } from "./contexts/SongListContext";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-import MusicCard from "./components/MusicCard";
-import Player from "./components/Player";
+import Layout from "./components/Layout";
+
+import Home from "./pages/Home";
+import Settings from "./pages/Settings";
+import Search from "./pages/Search";
 
 export default function App() {
-  const songList = useSongList();
-
   return (
-    <>
-      <Navbar />
-      <div className="flex w-fill justify-center items-center">
-        <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 py-24">
-          {songList.list.map((song) => (
-            <MusicCard key={song.id} song={song} />
-          ))}
-        </div>
-      </div>
-      <Player />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="search" element={<Search />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
