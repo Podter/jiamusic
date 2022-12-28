@@ -1,4 +1,4 @@
-import { Menu, RotateCw } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -18,6 +18,9 @@ export default function Navbar() {
               <a>Home</a>
             </li>
             <li>
+              <a>Refresh</a>
+            </li>
+            <li>
               <a>Settings</a>
             </li>
             <li>
@@ -33,9 +36,16 @@ export default function Navbar() {
         </button>
       </div>
       <div className="navbar-end">
-        <div className="tooltip tooltip-bottom" data-tip="Refresh">
+        <div className="form-control">
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered"
+          />
+        </div>
+        <div className="tooltip tooltip-bottom" data-tip="Search">
           <button className="btn btn-ghost btn-circle">
-            <RotateCw className="h-5 w-5" />
+            <Search className="h-5 w-5" />
           </button>
         </div>
       </div>
