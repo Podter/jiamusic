@@ -62,6 +62,10 @@
         "title": "JIΛmusic",
         "width": 1288
       }
-    ]
+    ],
+    "systemTray": {
+      "iconPath": "icons/32x32.png",
+      "iconAsTemplate": true
+    }
   }
 }
