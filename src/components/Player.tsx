@@ -4,6 +4,7 @@ import {
   Next20Filled,
   Previous20Filled,
   Speaker220Filled,
+  SpeakerMute20Filled,
 } from "@fluentui/react-icons";
 import { useCurrentSong } from "../contexts/CurrentSongContext";
 import { useEffect, useRef, useState } from "react";
@@ -19,10 +20,17 @@ export default function Player() {
 
   const [playing, setPlaying] = useState(false);
   const [audioSrc, setAudioSrc] = useState("");
+  const [volume, setVolume] = useState(100);
+  const [muted, setMuted] = useState(false);
 
   function playBtn() {
     if (!currentSong.song) currentSong.setSong(songList.list[0]);
     else setPlaying(!playing);
+  }
+
+  function muteBtn() {
+    if (volume > 0) setVolume(0);
+    else setVolume(100);
   }
 
   useEffect(() => {
@@ -40,6 +48,10 @@ export default function Player() {
         pb?.getFileUrl(currentSong.song, currentSong.song?.audio) || ""
       );
   }, [currentSong.song]);
+
+  useEffect(() => {
+    (audio.current as HTMLAudioElement).volume = muted ? 0 : volume / 100;
+  }, [volume, muted]);
 
   return (
     <div className="navbar bg-base-300 fixed bottom-0 z-40">
@@ -63,8 +75,19 @@ export default function Player() {
         </button>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
-          <Speaker220Filled />
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={muted ? 0 : volume}
+          className="range range-primary range-xs w-32"
+          onChange={(e) => (muted ? {} : setVolume(+e.target.value))}
+        />
+        <button
+          className="btn btn-ghost btn-circle"
+          onClick={() => setMuted(!muted)}
+        >
+          {muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
         </button>
       </div>
       <audio
