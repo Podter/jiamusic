@@ -1,0 +1,36 @@
+{
+  "name": "jiamusic",
+  "version": "1.0.0",
+  "type": "module",
+  "author": "jiafeitech",
+  "repository": "https://github.com/jiafeitech/jiamusic",
+  "license": "MIT",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "vite:dev": "vite",
+    "vite:build": "tsc && vite build",
+    "icons": "tauri icon ./src-tauri/icons/icon.png"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.2.2",
+    "@types/node": "^18.7.10",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^3.0.0",
+    "autoprefixer": "^10.4.13",
+    "daisyui": "^2.46.0",
+    "lucide-react": "^0.105.0-alpha.4",
+    "pocketbase": "^0.9.1",
+    "postcss": "^8.4.20",
+    "tailwindcss": "^3.2.4",
+    "typescript": "^4.6.4",
+    "vite": "^4.0.0"
+  }
+}
