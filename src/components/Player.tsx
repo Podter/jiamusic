@@ -28,9 +28,27 @@ export default function Player() {
     else setPlaying(!playing);
   }
 
-  function muteBtn() {
-    if (volume > 0) setVolume(0);
-    else setVolume(100);
+  function skipBack() {
+    const index = songList.list.findIndex(
+      (x) => x.title == currentSong.song?.title
+    );
+    if (index == 0) {
+      currentSong.setSong(songList.list[songList.list.length - 1]);
+    } else {
+      currentSong.setSong(songList.list[index - 1]);
+    }
+  }
+
+  function skipNext() {
+    const index = songList.list.findIndex(
+      (x) => x.title == currentSong.song?.title
+    );
+
+    if (index == songList.list.length - 1) {
+      currentSong.setSong(songList.list[0]);
+    } else {
+      currentSong.setSong(songList.list[index + 1]);
+    }
   }
 
   useEffect(() => {
@@ -64,13 +82,13 @@ export default function Player() {
         </a>
       </div>
       <div className="navbar-center">
-        <button className="btn btn-ghost btn-circle">
+        <button className="btn btn-ghost btn-circle" onClick={skipBack}>
           <Previous20Filled />
         </button>
         <button className="btn btn-ghost btn-circle" onClick={playBtn}>
           {playing ? <Pause20Filled /> : <Play20Filled />}
         </button>
-        <button className="btn btn-ghost btn-circle">
+        <button className="btn btn-ghost btn-circle" onClick={skipNext}>
           <Next20Filled />
         </button>
       </div>
