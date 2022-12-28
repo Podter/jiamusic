@@ -6,5 +6,5 @@
     JIΛmusic
 </h2>
 <h3 align="center">
-    A music streaming service app, built with React, TypeScript, Tauri and Rust by JIΛFEI (jiafeitech)
+    A music streaming service app by JIΛFEI (jiafeitech)
 </h3>
