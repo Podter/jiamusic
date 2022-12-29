@@ -10,7 +10,7 @@ const PocketBaseContext = createContext<PocketBase | undefined>(undefined);
 export const usePocketBase = () => useContext(PocketBaseContext);
 
 export function PocketBaseProvider({ children }: Props) {
-  const pb = new PocketBase("http://127.0.0.1:8090");
+  const pb = new PocketBase("http://api.jiamusic.podter.xyz/");
 
   return (
     <PocketBaseContext.Provider value={pb}>
