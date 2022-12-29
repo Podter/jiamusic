@@ -3,15 +3,15 @@
     windows_subsystem = "windows"
 )]
 
-use tauri::{CustomMenuItem, Manager, SystemTrayMenu, SystemTrayMenuItem};
+use tauri::{CustomMenuItem, Manager, RunEvent, SystemTrayMenu, SystemTrayMenuItem, WindowEvent};
 use tauri::{SystemTray, SystemTrayEvent};
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-    let open = CustomMenuItem::new("open".to_string(), "Open");
+    let show = CustomMenuItem::new("hide".to_string(), "Show JIΛmusic");
 
     let tray_menu = SystemTrayMenu::new()
-        .add_item(open)
+        .add_item(show)
         .add_native_item(SystemTrayMenuItem::Separator)
         .add_item(quit);
     let system_tray = SystemTray::new().with_menu(tray_menu);
@@ -19,28 +19,15 @@ fn main() {
     tauri::Builder::default()
         .system_tray(system_tray)
         .on_system_tray_event(|app, event| match event {
-            SystemTrayEvent::LeftClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                println!("system tray received a left click");
-            }
-            SystemTrayEvent::RightClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                println!("system tray received a right click");
-            }
-            SystemTrayEvent::DoubleClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                println!("system tray received a double click");
+            SystemTrayEvent::DoubleClick { .. } => {
+                let window = app.get_window("main").unwrap();
+                window.show().unwrap();
             }
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+                "show" => {
+                    let window = app.get_window("main").unwrap();
+                    window.show().unwrap();
+                }
                 "quit" => {
                     std::process::exit(0);
                 }
@@ -48,6 +35,17 @@ fn main() {
             },
             _ => {}
         })
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .on_window_event(|event| match event.event() {
+            WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+                event.window().hide().unwrap();
+            }
+            _ => {}
+        })
+        .build(tauri::generate_context!())
+        .expect("error while building tauri application")
+        .run(|_app, event| match event {
+            RunEvent::ExitRequested { api, .. } => api.prevent_exit(),
+            _ => {}
+        });
 }

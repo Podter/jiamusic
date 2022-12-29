@@ -13,6 +13,10 @@
     "allowlist": {
       "process": {
         "exit": true
+      },
+      "window": {
+        "show": true,
+        "hide": true
       }
     },
     "bundle": {
