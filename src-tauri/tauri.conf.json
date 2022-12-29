@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "jiamusic",
+    "productName": "JIAmusic",
     "version": "1.0.0"
   },
   "tauri": {
