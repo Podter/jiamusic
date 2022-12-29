@@ -21,6 +21,14 @@ export default function Navbar() {
     });
   }
 
+  function goHome() {
+    navigate("/");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   useEffect(() => {
     function handleBlur() {
       if (window.scrollY >= 90) {
@@ -49,8 +57,8 @@ export default function Navbar() {
             tabIndex={0}
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
-            <li>
-              <Link to="/">Home</Link>
+            <li onClick={goHome}>
+              <a>Home</a>
             </li>
             <li onClick={songList.refresh}>
               <a>Refresh</a>
@@ -65,13 +73,16 @@ export default function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <Link to="/" className="btn btn-ghost normal-case text-xl gap-2">
+        <button
+          onClick={goHome}
+          className="btn btn-ghost normal-case text-xl gap-2"
+        >
           <img src="/jiamusic.png" alt="JIΛmusic Logo" className="h-6 w-6" />
           JIΛmusic
-        </Link>
+        </button>
       </div>
       <div className="navbar-end">
-        <div className="form-control">
+        <div className="form-control mr-2">
           <div className="input-group">
             <input
               type="text"
