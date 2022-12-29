@@ -63,9 +63,9 @@ export default function Navbar() {
             <li onClick={songList.refresh}>
               <a>Refresh</a>
             </li>
-            <li>
+            {/* <li>
               <Link to="/settings">Settings</Link>
-            </li>
+            </li> */}
             <li onClick={() => exit(0)}>
               <a>Quit</a>
             </li>
