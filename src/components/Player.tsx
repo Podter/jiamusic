@@ -13,9 +13,9 @@ import {
 import { useCurrentSong } from "../contexts/CurrentSongContext";
 import { usePocketBase } from "../contexts/PocketBaseContext";
 import { useSongList } from "../contexts/SongListContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import fancyTimeFormat from "../utils/fancyTimeFormat";
-import { useAudio, useKeyPressEvent } from "react-use";
+import { useAudio } from "react-use";
 import { useEffect, useState } from "react";
 import { Record } from "pocketbase";
 
@@ -23,6 +23,7 @@ export default function Player() {
   const currentSong = useCurrentSong();
   const songList = useSongList();
   const pb = usePocketBase();
+  const navigate = useNavigate();
 
   const [audio, state, controls, audioRef] = useAudio({
     src: "",
@@ -126,6 +127,7 @@ export default function Player() {
               <button
                 className="btn btn-ghost normal-case text-xl gap-4"
                 onClick={() => {
+                  navigate("/");
                   const card = document.getElementById(
                     currentSong.song?.id as string
                   );
@@ -221,7 +223,7 @@ export default function Player() {
           </div>
 
           <div className="tooltip" data-tip={state.muted ? "Unmute" : "Mute"}>
-            <button className="btn btn-ghost btn-circle" onClick={muteBtn}>
+            <button className="btn btn-ghost btn-circle mx-2" onClick={muteBtn}>
               {state.muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
             </button>
           </div>
