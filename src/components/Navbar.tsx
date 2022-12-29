@@ -2,13 +2,14 @@ import { Search20Filled, LineHorizontal320Filled } from "@fluentui/react-icons";
 import { useSongList } from "../contexts/SongListContext";
 import { exit } from "@tauri-apps/api/process";
 import { Link, createSearchParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const songList = useSongList();
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [navBlur, setNavBlur] = useState(false);
 
   function search() {
     if (!searchQuery) navigate("/");
@@ -20,8 +21,23 @@ export default function Navbar() {
     });
   }
 
+  useEffect(() => {
+    function handleBlur() {
+      if (window.scrollY >= 90) {
+        setNavBlur(true);
+      } else {
+        setNavBlur(false);
+      }
+    }
+    window.addEventListener("scroll", handleBlur);
+  }, []);
+
   return (
-    <div className="navbar bg-base-300/20 backdrop-blur-xl shadow-sm fixed z-50">
+    <div
+      className={`navbar fixed z-50 transition-all backdrop-blur-xl ${
+        navBlur ? "bg-base-300/20 shadow-sm" : "bg-base-300"
+      }`}
+    >
       <div className="navbar-start">
         <div className="dropdown">
           <div className="tooltip tooltip-bottom" data-tip="Menu">
