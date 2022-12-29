@@ -8,7 +8,7 @@ use tauri::{SystemTray, SystemTrayEvent};
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-    let show = CustomMenuItem::new("hide".to_string(), "Show JIΛmusic");
+    let show = CustomMenuItem::new("show".to_string(), "Show JIΛmusic");
 
     let tray_menu = SystemTrayMenu::new()
         .add_item(show)
