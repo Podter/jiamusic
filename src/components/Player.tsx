@@ -5,15 +5,17 @@ import {
   Previous20Filled,
   Speaker220Filled,
   SpeakerMute20Filled,
-  SkipBack1020Filled,
-  SkipForward1020Filled,
+  ArrowShuffle20Filled,
+  ArrowRepeatAll20Filled,
+  ArrowShuffleOff20Filled,
+  ArrowRepeatAllOff20Filled,
 } from "@fluentui/react-icons";
 import { useCurrentSong } from "../contexts/CurrentSongContext";
 import { usePocketBase } from "../contexts/PocketBaseContext";
 import { useSongList } from "../contexts/SongListContext";
 import { Link } from "react-router-dom";
 import fancyTimeFormat from "../utils/fancyTimeFormat";
-import { useAudio } from "react-use";
+import { useAudio, useKeyPressEvent } from "react-use";
 import { useEffect, useState } from "react";
 
 export default function Player() {
@@ -28,6 +30,8 @@ export default function Player() {
   const [volume, setVolume] = useState(100);
   const [isChanging, setIsChanging] = useState(false);
   const [newTime, setNewTime] = useState(0);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(false);
 
   function skipBack() {
     const index = songList.list.findIndex(
@@ -68,13 +72,21 @@ export default function Player() {
 
   useEffect(() => {
     controls.pause();
-    if (currentSong.song)
-      (audioRef.current as any).src =
+    if (currentSong.song) {
+      const songUrl =
         pb?.getFileUrl(currentSong.song, currentSong.song.audio) || "";
+
+      (audioRef.current as any).src = songUrl;
+      document.title = currentSong.song.title;
+    }
   }, [currentSong.song]);
 
   audioRef.current?.addEventListener("loadeddata", controls.play);
   audioRef.current?.addEventListener("ended", skipNext);
+
+  useKeyPressEvent(" ", playBtn);
+  useKeyPressEvent("ArrowLeft", () => controls.seek(state.time - 10));
+  useKeyPressEvent("ArrowRight", () => controls.seek(state.time + 10));
 
   const albumCoverUrl = currentSong.song?.album_cover
     ? (pb?.getFileUrl(
@@ -113,9 +125,9 @@ export default function Player() {
           <div className="tooltip" data-tip="Skip Back">
             <button
               className="btn btn-ghost btn-circle"
-              onClick={() => controls.seek(state.time - 10)}
+              onClick={() => setShuffle(!shuffle)}
             >
-              <SkipBack1020Filled />
+              {shuffle ? <ArrowShuffle20Filled /> : <ArrowShuffleOff20Filled />}
             </button>
           </div>
 
@@ -140,9 +152,13 @@ export default function Player() {
           <div className="tooltip" data-tip="Skip Forward">
             <button
               className="btn btn-ghost btn-circle"
-              onClick={() => controls.seek(state.time + 10)}
+              onClick={() => setRepeat(!repeat)}
             >
-              <SkipForward1020Filled />
+              {repeat ? (
+                <ArrowRepeatAll20Filled />
+              ) : (
+                <ArrowRepeatAllOff20Filled />
+              )}
             </button>
           </div>
         </div>
