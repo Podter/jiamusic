@@ -84,9 +84,7 @@
         "options": {
           "maxSelect": 1,
           "maxSize": 5242880,
-          "mimeTypes": [
-            "audio/mpeg"
-          ],
+          "mimeTypes": ["audio/mpeg", "audio/webm"],
           "thumbs": []
         }
       },
@@ -121,6 +119,19 @@
             "image/gif"
           ],
           "thumbs": []
+        }
+      },
+      {
+        "id": "u4q6cpv0",
+        "name": "source",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
         }
       }
     ],
