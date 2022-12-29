@@ -1,10 +1,24 @@
 import { Search20Filled, LineHorizontal320Filled } from "@fluentui/react-icons";
 import { useSongList } from "../contexts/SongListContext";
 import { exit } from "@tauri-apps/api/process";
-import { Link } from "react-router-dom";
+import { Link, createSearchParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Navbar() {
   const songList = useSongList();
+  const navigate = useNavigate();
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  function search() {
+    if (!searchQuery) navigate("/");
+    navigate({
+      pathname: "/search",
+      search: `?${createSearchParams({
+        query: searchQuery,
+      })}`,
+    });
+  }
 
   return (
     <div className="navbar bg-base-300/20 backdrop-blur-xl shadow-sm fixed z-50">
@@ -47,10 +61,15 @@ export default function Navbar() {
               type="text"
               placeholder="Search…"
               className="input input-bordered"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key == "Enter") search();
+              }}
             />
-            <Link to="/search" className="btn btn-square">
+            <button onClick={search} className="btn btn-square">
               <Search20Filled />
-            </Link>
+            </button>
           </div>
         </div>
       </div>

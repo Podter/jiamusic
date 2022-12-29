@@ -1,8 +1,6 @@
 import { useSongList } from "../contexts/SongListContext";
 
-import Navbar from "../components/Navbar";
 import MusicCard from "../components/MusicCard";
-import Player from "../components/Player";
 
 export default function Home() {
   const songList = useSongList();

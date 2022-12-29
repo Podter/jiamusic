@@ -28,6 +28,7 @@
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
     "daisyui": "^2.46.0",
+    "fuse.js": "^6.6.2",
     "pocketbase": "^0.9.1",
     "postcss": "^8.4.20",
     "react-use": "^17.4.0",
