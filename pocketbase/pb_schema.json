@@ -93,7 +93,7 @@
         "name": "artist",
         "type": "text",
         "system": false,
-        "required": false,
+        "required": true,
         "unique": false,
         "options": {
           "min": null,
@@ -106,7 +106,7 @@
         "name": "album_cover",
         "type": "file",
         "system": false,
-        "required": false,
+        "required": true,
         "unique": false,
         "options": {
           "maxSelect": 1,
@@ -126,7 +126,7 @@
         "name": "source",
         "type": "text",
         "system": false,
-        "required": false,
+        "required": true,
         "unique": false,
         "options": {
           "min": null,
