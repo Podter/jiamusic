@@ -29,7 +29,7 @@ export default function Navbar() {
               <Link to="/settings">Settings</Link>
             </li>
             <li onClick={() => exit(0)}>
-              <a>Exit</a>
+              <a>Quit</a>
             </li>
           </ul>
         </div>
