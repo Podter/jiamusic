@@ -87,16 +87,32 @@ export default function Player() {
     (audio.current as HTMLAudioElement).currentTime = newCurrentTime;
   }, [newCurrentTime]);
 
+  const albumCoverUrl = currentSong.song?.album_cover
+    ? (pb?.getFileUrl(
+        currentSong.song,
+        currentSong.song?.album_cover
+      ) as string)
+    : "https://placeimg.com/256/256/arch";
+
   return (
     <>
       <div className="navbar bg-base-300 fixed bottom-0 z-30 min-h-[5rem]">
         <div className="navbar-start">
-          <Link
-            className="btn btn-ghost normal-case text-xl"
-            to={`/#${currentSong.song?.id}`}
-          >
-            {currentSong.song?.title || ""}
-          </Link>
+          {currentSong.song ? (
+            <Link
+              className="btn btn-ghost normal-case text-xl gap-2"
+              to={`/#${currentSong.song?.id}`}
+            >
+              <img
+                src={!currentSong.song ? "" : albumCoverUrl}
+                alt="Cover"
+                className="h-6 w-6"
+              />
+              {currentSong.song?.title || ""}
+            </Link>
+          ) : (
+            <a></a>
+          )}
         </div>
         <div className="navbar-center">
           <button
