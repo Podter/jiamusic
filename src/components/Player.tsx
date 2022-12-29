@@ -12,6 +12,7 @@ import { useCurrentSong } from "../contexts/CurrentSongContext";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { usePocketBase } from "../contexts/PocketBaseContext";
 import { useSongList } from "../contexts/SongListContext";
+import { Link } from "react-router-dom";
 
 export default function Player() {
   const currentSong = useCurrentSong();
@@ -90,12 +91,12 @@ export default function Player() {
     <>
       <div className="navbar bg-base-300 fixed bottom-0 z-30 min-h-[5rem]">
         <div className="navbar-start">
-          <a
+          <Link
             className="btn btn-ghost normal-case text-xl"
-            href={`#${currentSong.song?.id}`}
+            to={`/#${currentSong.song?.id}`}
           >
             {currentSong.song?.title || ""}
-          </a>
+          </Link>
         </div>
         <div className="navbar-center">
           <button
