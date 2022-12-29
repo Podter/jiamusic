@@ -13,6 +13,7 @@ import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { usePocketBase } from "../contexts/PocketBaseContext";
 import { useSongList } from "../contexts/SongListContext";
 import { Link } from "react-router-dom";
+import fancyTimeFormat from "../utils/fancyTimeFormat";
 
 export default function Player() {
   const currentSong = useCurrentSong();
@@ -161,14 +162,16 @@ export default function Player() {
         </div>
 
         <div className="navbar-end">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={muted ? 0 : volume}
-            className="range range-primary range-xs w-32"
-            onChange={(e) => (muted ? {} : setVolume(+e.target.value))}
-          />
+          <div className="tooltip" data-tip={muted ? 0 : volume}>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={muted ? 0 : volume}
+              className="range range-primary range-xs w-32"
+              onChange={(e) => (muted ? {} : setVolume(+e.target.value))}
+            />
+          </div>
 
           <div className="tooltip" data-tip={muted ? "Unmute" : "Mute"}>
             <button
@@ -181,22 +184,29 @@ export default function Player() {
         </div>
       </div>
 
-      <input
-        type="range"
-        min="0"
-        max={duration}
-        value={isChanging ? newCurrentTime : currentTime}
-        className="range range-primary range-2xs w-screen bottom-0 fixed z-40 rounded-none"
-        onMouseDown={() => {
-          setPlaying(false);
-          setIsChanging(true);
-        }}
-        onMouseUp={() => {
-          setPlaying(true);
-          setIsChanging(false);
-        }}
-        onChange={(e) => setNewCurrentTime(+e.target.value)}
-      />
+      <div
+        className="tooltip w-screen -bottom-[6px] fixed z-40"
+        data-tip={`${fancyTimeFormat(currentTime)}/${fancyTimeFormat(
+          duration
+        )}`}
+      >
+        <input
+          type="range"
+          min="0"
+          max={duration}
+          value={isChanging ? newCurrentTime : currentTime}
+          className="range range-primary range-2xs  rounded-none"
+          onMouseDown={() => {
+            setPlaying(false);
+            setIsChanging(true);
+          }}
+          onMouseUp={() => {
+            setPlaying(true);
+            setIsChanging(false);
+          }}
+          onChange={(e) => setNewCurrentTime(+e.target.value)}
+        />
+      </div>
 
       <audio
         ref={audio}
