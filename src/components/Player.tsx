@@ -84,11 +84,12 @@ export default function Player() {
   audioRef.current?.addEventListener("loadeddata", controls.play);
   audioRef.current?.addEventListener("ended", skipNext);
 
-  useKeyPressEvent(" ", playBtn);
-  useKeyPressEvent("ArrowLeft", () => controls.seek(state.time - 10));
-  useKeyPressEvent("ArrowRight", () => controls.seek(state.time + 10));
-  useKeyPressEvent(",", skipBack);
-  useKeyPressEvent(".", skipNext);
+  // So buggy
+  // useKeyPressEvent(" ", playBtn);
+  // useKeyPressEvent("ArrowLeft", () => controls.seek(state.time - 10));
+  // useKeyPressEvent("ArrowRight", () => controls.seek(state.time + 10));
+  // useKeyPressEvent(",", skipBack);
+  // useKeyPressEvent(".", skipNext);
 
   const albumCoverUrl = currentSong.song?.album_cover
     ? (pb?.getFileUrl(
