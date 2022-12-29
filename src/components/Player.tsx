@@ -27,6 +27,7 @@ export default function Player() {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [newCurrentTime, setNewCurrentTime] = useState(0);
+  const [isChanging, setIsChanging] = useState(false);
 
   function playBtn() {
     if (!currentSong.song) currentSong.setSong(songList.list[0]);
@@ -142,9 +143,17 @@ export default function Player() {
         type="range"
         min="0"
         max={duration}
-        value={currentTime}
+        value={isChanging ? newCurrentTime : currentTime}
         className="range range-primary range-2xs w-screen bottom-0 fixed z-40 rounded-none"
-        readOnly={true}
+        onMouseDown={() => {
+          setPlaying(false);
+          setIsChanging(true);
+        }}
+        onMouseUp={() => {
+          setPlaying(true);
+          setIsChanging(false);
+        }}
+        onChange={(e) => setNewCurrentTime(+e.target.value)}
       />
       <audio
         ref={audio}
