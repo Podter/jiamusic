@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import fancyTimeFormat from "../utils/fancyTimeFormat";
 import { useAudio, useKeyPressEvent } from "react-use";
 import { useEffect, useState } from "react";
+import { Record } from "pocketbase";
 
 export default function Player() {
   const currentSong = useCurrentSong();
@@ -57,6 +58,11 @@ export default function Player() {
   }
 
   function playBtn() {
+    if (!currentSong.song)
+      currentSong.setSong(
+        songList.list[Math.floor(Math.random() * songList.list.length)]
+      );
+
     if (state.playing) controls.pause();
     else if (state.paused) controls.play();
   }
@@ -82,7 +88,17 @@ export default function Player() {
   }, [currentSong.song]);
 
   audioRef.current?.addEventListener("loadeddata", controls.play);
-  audioRef.current?.addEventListener("ended", skipNext);
+  audioRef.current?.addEventListener("ended", () => {
+    if (repeat) {
+      currentSong.setSong(currentSong.song as Record);
+      controls.seek(0);
+      controls.play();
+    } else if (shuffle) {
+      currentSong.setSong(
+        songList.list[Math.floor(Math.random() * songList.list.length)]
+      );
+    } else skipNext();
+  });
 
   // So buggy
   // useKeyPressEvent(" ", playBtn);
@@ -107,9 +123,18 @@ export default function Player() {
               className="tooltip"
               data-tip={`By ${currentSong.song.artist || "Unknown"}`}
             >
-              <Link
+              <button
                 className="btn btn-ghost normal-case text-xl gap-4"
-                to={`/#${currentSong.song?.id}`}
+                onClick={() => {
+                  const card = document.getElementById(
+                    currentSong.song?.id as string
+                  );
+                  card?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "center",
+                  });
+                }}
               >
                 <img
                   src={!currentSong.song ? "" : albumCoverUrl}
@@ -117,7 +142,7 @@ export default function Player() {
                   className="h-6 w-6 rounded-md"
                 />
                 {currentSong.song?.title || ""}
-              </Link>
+              </button>
             </div>
           ) : (
             <a></a>
@@ -125,10 +150,16 @@ export default function Player() {
         </div>
 
         <div className="navbar-center">
-          <div className="tooltip" data-tip="Skip Back">
+          <div
+            className="tooltip"
+            data-tip={shuffle ? "Disable shuffle" : "Enable shuffle"}
+          >
             <button
               className="btn btn-ghost btn-circle"
-              onClick={() => setShuffle(!shuffle)}
+              onClick={() => {
+                if (repeat) setRepeat(false);
+                setShuffle(!shuffle);
+              }}
             >
               {shuffle ? <ArrowShuffle20Filled /> : <ArrowShuffleOff20Filled />}
             </button>
@@ -152,10 +183,16 @@ export default function Player() {
             </button>
           </div>
 
-          <div className="tooltip" data-tip="Skip Forward">
+          <div
+            className="tooltip"
+            data-tip={repeat ? "Disable repeat" : "Enable repeat"}
+          >
             <button
               className="btn btn-ghost btn-circle"
-              onClick={() => setRepeat(!repeat)}
+              onClick={() => {
+                if (shuffle) setShuffle(false);
+                setRepeat(!repeat);
+              }}
             >
               {repeat ? (
                 <ArrowRepeatAll20Filled />
