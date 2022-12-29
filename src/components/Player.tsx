@@ -99,46 +99,67 @@ export default function Player() {
       <div className="navbar bg-base-300 fixed bottom-0 z-30 min-h-[5rem]">
         <div className="navbar-start">
           {currentSong.song ? (
-            <Link
-              className="btn btn-ghost normal-case text-xl gap-2"
-              to={`/#${currentSong.song?.id}`}
+            <div
+              className="tooltip"
+              data-tip={`By ${currentSong.song.artist || "Unknown"}`}
             >
-              <img
-                src={!currentSong.song ? "" : albumCoverUrl}
-                alt="Cover"
-                className="h-6 w-6"
-              />
-              {currentSong.song?.title || ""}
-            </Link>
+              <Link
+                className="btn btn-ghost normal-case text-xl gap-2"
+                to={`/#${currentSong.song?.id}`}
+              >
+                <img
+                  src={!currentSong.song ? "" : albumCoverUrl}
+                  alt="Cover"
+                  className="h-6 w-6"
+                />
+                {currentSong.song?.title || ""}
+              </Link>
+            </div>
           ) : (
             <a></a>
           )}
         </div>
+
         <div className="navbar-center">
-          <button
-            className="btn btn-ghost btn-circle"
-            onClick={() => setNewCurrentTime(currentTime - 10)}
-          >
-            <SkipBack1020Filled />
-          </button>
-          <button className="btn btn-ghost btn-circle" onClick={skipBack}>
-            <Previous20Filled />
-          </button>
-          <button className="btn btn-ghost btn-circle" onClick={playBtn}>
-            {playing ? <Pause20Filled /> : <Play20Filled />}
-          </button>
-          <button className="btn btn-ghost btn-circle" onClick={skipNext}>
-            <Next20Filled />
-          </button>
-          <button
-            className="btn btn-ghost btn-circle"
-            onClick={() => {
-              setNewCurrentTime(currentTime + 10);
-            }}
-          >
-            <SkipForward1020Filled />
-          </button>
+          <div className="tooltip" data-tip="Skip Back">
+            <button
+              className="btn btn-ghost btn-circle"
+              onClick={() => setNewCurrentTime(currentTime - 10)}
+            >
+              <SkipBack1020Filled />
+            </button>
+          </div>
+
+          <div className="tooltip" data-tip="Previous">
+            <button className="btn btn-ghost btn-circle" onClick={skipBack}>
+              <Previous20Filled />
+            </button>
+          </div>
+
+          <div className="tooltip" data-tip={playing ? "Pause" : "Play"}>
+            <button className="btn btn-ghost btn-circle" onClick={playBtn}>
+              {playing ? <Pause20Filled /> : <Play20Filled />}
+            </button>
+          </div>
+
+          <div className="tooltip" data-tip="Next">
+            <button className="btn btn-ghost btn-circle" onClick={skipNext}>
+              <Next20Filled />
+            </button>
+          </div>
+
+          <div className="tooltip" data-tip="Skip Forward">
+            <button
+              className="btn btn-ghost btn-circle"
+              onClick={() => {
+                setNewCurrentTime(currentTime + 10);
+              }}
+            >
+              <SkipForward1020Filled />
+            </button>
+          </div>
         </div>
+
         <div className="navbar-end">
           <input
             type="range"
@@ -148,14 +169,18 @@ export default function Player() {
             className="range range-primary range-xs w-32"
             onChange={(e) => (muted ? {} : setVolume(+e.target.value))}
           />
-          <button
-            className="btn btn-ghost btn-circle"
-            onClick={() => setMuted(!muted)}
-          >
-            {muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
-          </button>
+
+          <div className="tooltip" data-tip={muted ? "Unmute" : "Mute"}>
+            <button
+              className="btn btn-ghost btn-circle"
+              onClick={() => setMuted(!muted)}
+            >
+              {muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
+            </button>
+          </div>
         </div>
       </div>
+
       <input
         type="range"
         min="0"
@@ -172,6 +197,7 @@ export default function Player() {
         }}
         onChange={(e) => setNewCurrentTime(+e.target.value)}
       />
+
       <audio
         ref={audio}
         src={audioSrc}
