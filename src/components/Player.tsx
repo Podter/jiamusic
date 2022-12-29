@@ -105,13 +105,13 @@ export default function Player() {
               data-tip={`By ${currentSong.song.artist || "Unknown"}`}
             >
               <Link
-                className="btn btn-ghost normal-case text-xl gap-2"
+                className="btn btn-ghost normal-case text-xl gap-4"
                 to={`/#${currentSong.song?.id}`}
               >
                 <img
                   src={!currentSong.song ? "" : albumCoverUrl}
                   alt="Cover"
-                  className="h-6 w-6"
+                  className="h-6 w-6 rounded-md"
                 />
                 {currentSong.song?.title || ""}
               </Link>
