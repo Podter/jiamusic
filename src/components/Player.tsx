@@ -18,6 +18,13 @@ import fancyTimeFormat from "../utils/fancyTimeFormat";
 import { useAudio } from "react-use";
 import { useEffect, useState } from "react";
 import { Record } from "pocketbase";
+import stringToBoolean from "../utils/stringToBoolean";
+
+type LocalStorageData = {
+  volume: number;
+  shuffle: boolean;
+  repeat: boolean;
+};
 
 export default function Player() {
   const currentSong = useCurrentSong();
@@ -29,11 +36,26 @@ export default function Player() {
     src: "",
   });
 
-  const [volume, setVolume] = useState(100);
+  function getLocalStorage(): LocalStorageData {
+    const savedVolume = localStorage.getItem("volume");
+    const savedShuffle = localStorage.getItem("shuffle");
+    const savedRepeat = localStorage.getItem("repeat");
+
+    const data: LocalStorageData = {
+      volume: savedVolume ? +savedVolume : 100,
+      shuffle: savedShuffle ? stringToBoolean(savedShuffle) : false,
+      repeat: savedRepeat ? stringToBoolean(savedRepeat) : false,
+    };
+    return data;
+  }
+
+  const localStorageData = getLocalStorage();
+
+  const [volume, setVolume] = useState(localStorageData.volume);
   const [isChanging, setIsChanging] = useState(false);
   const [newTime, setNewTime] = useState(0);
-  const [shuffle, setShuffle] = useState(false);
-  const [repeat, setRepeat] = useState(false);
+  const [shuffle, setShuffle] = useState(localStorageData.shuffle);
+  const [repeat, setRepeat] = useState(localStorageData.repeat);
 
   function skipBack() {
     const index = songList.list.findIndex(
@@ -75,6 +97,7 @@ export default function Player() {
 
   useEffect(() => {
     controls.volume(volume / 100);
+    localStorage.setItem("volume", `${volume}`);
   }, [volume]);
 
   useEffect(() => {
@@ -159,8 +182,12 @@ export default function Player() {
             <button
               className="btn btn-ghost btn-circle"
               onClick={() => {
-                if (repeat) setRepeat(false);
+                if (repeat) {
+                  setRepeat(false);
+                  localStorage.setItem("repeat", `${false}`);
+                }
                 setShuffle(!shuffle);
+                localStorage.setItem("shuffle", `${!shuffle}`);
               }}
             >
               {shuffle ? <ArrowShuffle20Filled /> : <ArrowShuffleOff20Filled />}
@@ -192,8 +219,12 @@ export default function Player() {
             <button
               className="btn btn-ghost btn-circle"
               onClick={() => {
-                if (shuffle) setShuffle(false);
+                if (shuffle) {
+                  setShuffle(false);
+                  localStorage.setItem("shuffle", `${false}`);
+                }
                 setRepeat(!repeat);
+                localStorage.setItem("repeat", `${!repeat}`);
               }}
             >
               {repeat ? (
