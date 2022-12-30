@@ -1,6 +1,6 @@
 [package]
 name = "jiamusic"
-version = "1.0.0"
+version = "1.0.1"
 description = "JIΛmusic"
 authors = ["jiafeitech"]
 license = "MIT"
