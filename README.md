@@ -9,15 +9,15 @@
     A music streaming service app by JIΛFEI (jiafeitech)
 </h3>
 
-# Developing and building
+## Developing and building
 
 This should work on all operating systems. Including Windows, macOS and Linux
 
-## Installing building dependencies
+### Installing building dependencies
 
 Make sure you have Node.js and Rust installed and follow [this instruction](https://tauri.app/v1/guides/getting-started/prerequisites) to install Tauri building dependencies
 
-## Developing
+### Developing
 
 ```bash
 npm run dev
@@ -25,7 +25,7 @@ npm run dev
 yarn dev
 ```
 
-## Building
+### Building
 
 ```bash
 npm run build
@@ -35,7 +35,7 @@ yarn build
 
 The built executable should be in `src-tauri/target/release`
 
-# Backend
+## Backend
 
 [PocketBase](https://pocketbase.io/) is the backend for JIΛmusic.
 
