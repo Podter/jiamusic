@@ -6,8 +6,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "JIAmusic",
-    "version": "1.0.1"
+    "productName": "JIΛmusic",
+    "version": "1.0.2"
   },
   "tauri": {
     "allowlist": {
@@ -55,6 +55,12 @@
         "digestAlgorithm": "sha256",
         "timestampUrl": "",
         "wix": {
+          "language": {
+            "en-US": {
+              "localePath": "installer/en-US.wxl"
+            }
+          },
+          "template": "installer/main.wxs",
           "bannerPath": "installer/banner.png",
           "dialogImagePath": "installer/dialogImage.png"
         }
