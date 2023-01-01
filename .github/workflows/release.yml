@@ -39,7 +39,7 @@ jobs:
         run: yarn # Change this to npm, yarn or pnpm.
 
       - name: Build the app
-        uses: jiafeitech/tauri-action@v0.2.1
+        uses: jiafeitech/tauri-action@dev
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
