@@ -3,7 +3,7 @@ import { Store } from "tauri-plugin-store-api";
 
 const StoreContext = createContext<Store | undefined>(undefined);
 
-export function useStore() {
+export function useTauriStore() {
   const context = useContext(StoreContext);
   if (!context) {
     throw new Error("useStore must be used within a StoreProvider");
