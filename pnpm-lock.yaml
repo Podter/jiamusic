@@ -70,6 +70,9 @@ devDependencies:
   eslint-plugin-react-refresh:
     specifier: ^0.4.1
     version: 0.4.1(eslint@8.43.0)
+  pocketbase:
+    specifier: ^0.15.2
+    version: 0.15.2
   postcss:
     specifier: ^8.4.24
     version: 8.4.24
@@ -2607,6 +2610,10 @@ packages:
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /pocketbase@0.15.2:
+    resolution: {integrity: sha512-dGSwO2j3XqtFMANNNEVh/moRw0ItOraKC1p3J+I0y/tPEfgleCAUptMWhqHrFNS+jM5r21eSS1U48N9/OmHFzA==}
     dev: true
 
   /postcss-import@15.1.0(postcss@8.4.24):
