@@ -22,6 +22,7 @@ fn main() {
             MacosLauncher::LaunchAgent,
             Some(vec![]),
         ))
+        .plugin(tauri_plugin_store::Builder::default().build())
         .setup(|app| {
             let window = app.get_window("main").unwrap();
 
