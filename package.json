@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@fluentui/react-icons": "^2.0.204",
+    "@fontsource/inter": "^5.0.3",
     "@radix-ui/react-menubar": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@tauri-apps/cli": "^1.4.0",
