@@ -5,7 +5,9 @@ export default function Layout() {
   return (
     <>
       <Titlebar />
-      <Outlet />
+      <main className="mt-10">
+        <Outlet />
+      </main>
     </>
   );
 }
