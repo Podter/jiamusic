@@ -9,7 +9,7 @@ import {
 
 export default function Menu() {
   return (
-    <Menubar className="h-8 border-none">
+    <Menubar className="h-8 border-none ml-2">
       <MenubarMenu>
         <MenubarTrigger asChild className="px-2">
           <span className="font-bold">
