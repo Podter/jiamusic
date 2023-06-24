@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Menubar,
   MenubarContent,
@@ -5,9 +6,17 @@ import {
   MenubarMenu,
   MenubarSeparator,
   MenubarTrigger,
+  MenubarCheckboxItem,
 } from "../ui/Menubar";
+import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
 
 export default function Menu() {
+  const [autostart, setAutostart] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    isEnabled().then((enabled) => setAutostart(enabled));
+  }, []);
+
   return (
     <Menubar className="h-8 border-none ml-2">
       <MenubarMenu>
@@ -25,6 +34,21 @@ export default function Menu() {
         </MenubarTrigger>
         <MenubarContent>
           <MenubarItem>About JIΛmusic</MenubarItem>
+          <MenubarSeparator />
+          <MenubarCheckboxItem
+            checked={autostart}
+            onClick={async () => {
+              if (autostart) {
+                await disable();
+                setAutostart(false);
+              } else if (!autostart) {
+                await enable();
+                setAutostart(true);
+              }
+            }}
+          >
+            Autostart
+          </MenubarCheckboxItem>
           <MenubarSeparator />
           <MenubarItem>Hide Window</MenubarItem>
           <MenubarItem>Quit</MenubarItem>
