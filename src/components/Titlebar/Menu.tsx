@@ -7,8 +7,11 @@ import {
   MenubarSeparator,
   MenubarTrigger,
   MenubarCheckboxItem,
+  MenubarRadioGroup,
+  MenubarRadioItem,
 } from "../ui/Menubar";
 import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
+import { appWindow } from "@tauri-apps/api/window";
 
 export default function Menu() {
   const [autostart, setAutostart] = useState<boolean | undefined>(undefined);
@@ -40,8 +43,12 @@ export default function Menu() {
       <MenubarMenu>
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Hide Window</MenubarItem>
-          <MenubarItem>Quit</MenubarItem>
+          <MenubarItem>Refresh</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem onSelect={() => appWindow.hide()}>
+            Hide Window
+          </MenubarItem>
+          <MenubarItem onSelect={() => appWindow.close()}>Quit</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
@@ -49,7 +56,7 @@ export default function Menu() {
         <MenubarContent>
           <MenubarCheckboxItem
             checked={autostart}
-            onClick={async () => {
+            onSelect={async () => {
               if (autostart) {
                 await disable();
                 setAutostart(false);
@@ -61,11 +68,17 @@ export default function Menu() {
           >
             Autostart
           </MenubarCheckboxItem>
+          <MenubarSeparator />
+          <MenubarRadioGroup value="light">
+            <MenubarRadioItem value="light">Light theme</MenubarRadioItem>
+            <MenubarRadioItem value="dark">Dark theme</MenubarRadioItem>
+          </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger>Help</MenubarTrigger>
         <MenubarContent>
+          <MenubarItem>Open GitHub</MenubarItem>
           <MenubarItem>About JIΛmusic</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
