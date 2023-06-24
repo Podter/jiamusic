@@ -1,9 +1,9 @@
-import { Button } from "./components/ui/button";
+import Titlebar from "./components/Titlebar";
 
 export default function App() {
   return (
     <div>
-      <Button>Button</Button>
+      <Titlebar />
     </div>
   );
 }
