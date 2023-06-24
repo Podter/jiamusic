@@ -11,6 +11,7 @@
     "build": "tauri build",
     "vite:dev": "vite",
     "vite:build": "tsc && vite build",
+    "icons": "tauri icon ./src-tauri/icons/icon.png",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
