@@ -2,6 +2,9 @@
 
 use tauri::Manager;
 
+#[cfg(not(target_os = "linux"))]
+use window_shadows::set_shadow;
+
 #[derive(Clone, serde::Serialize)]
 struct Payload {
     args: Vec<String>,
@@ -14,6 +17,14 @@ fn main() {
             app.emit_all("single-instance", Payload { args: argv, cwd })
                 .unwrap();
         }))
+        .setup(|app| {
+            let window = app.get_window("main").unwrap();
+
+            #[cfg(not(target_os = "linux"))]
+            set_shadow(&window, true).expect("Unsupported platform!");
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
