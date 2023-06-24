@@ -18,9 +18,13 @@ export default function Menu() {
   }, []);
 
   return (
-    <Menubar className="h-8 border-none ml-2">
+    <Menubar className="h-8 border-none">
       <MenubarMenu>
-        <MenubarTrigger asChild className="px-2">
+        <MenubarTrigger
+          asChild
+          className="focus:bg-background focus:text-foreground data-[state=open]:bg-background data-[state=open]:text-foreground"
+          disabled
+        >
           <span className="font-bold">
             <img
               src="/jiamusic.png"
@@ -32,9 +36,17 @@ export default function Menu() {
             JIΛmusic
           </span>
         </MenubarTrigger>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>About JIΛmusic</MenubarItem>
-          <MenubarSeparator />
+          <MenubarItem>Hide Window</MenubarItem>
+          <MenubarItem>Quit</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Options</MenubarTrigger>
+        <MenubarContent>
           <MenubarCheckboxItem
             checked={autostart}
             onClick={async () => {
@@ -49,9 +61,12 @@ export default function Menu() {
           >
             Autostart
           </MenubarCheckboxItem>
-          <MenubarSeparator />
-          <MenubarItem>Hide Window</MenubarItem>
-          <MenubarItem>Quit</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Help</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>About JIΛmusic</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
