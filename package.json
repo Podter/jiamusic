@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@fluentui/react-icons": "^2.0.204",
     "@radix-ui/react-slot": "^1.0.2",
     "@tauri-apps/cli": "^1.4.0",
     "@types/node": "^18.7.10",
@@ -33,7 +34,6 @@
     "eslint": "^8.43.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
-    "lucide-react": "^0.252.0",
     "postcss": "^8.4.24",
     "shadcn-ui": "^0.2.1",
     "tailwind-merge": "^1.13.2",
