@@ -1,51 +1,15 @@
-#![cfg_attr(
-    all(not(debug_assertions), target_os = "windows"),
-    windows_subsystem = "windows"
-)]
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{CustomMenuItem, Manager, RunEvent, SystemTrayMenu, SystemTrayMenuItem, WindowEvent};
-use tauri::{SystemTray, SystemTrayEvent};
+// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+#[tauri::command]
+fn greet(name: &str) -> String {
+    format!("Hello, {}! You've been greeted from Rust!", name)
+}
 
 fn main() {
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-    let show = CustomMenuItem::new("show".to_string(), "Show JIΛmusic");
-
-    let tray_menu = SystemTrayMenu::new()
-        .add_item(show)
-        .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(quit);
-    let system_tray = SystemTray::new().with_menu(tray_menu);
-
     tauri::Builder::default()
-        .system_tray(system_tray)
-        .on_system_tray_event(|app, event| match event {
-            SystemTrayEvent::DoubleClick { .. } => {
-                let window = app.get_window("main").unwrap();
-                window.show().unwrap();
-            }
-            SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-                "show" => {
-                    let window = app.get_window("main").unwrap();
-                    window.show().unwrap();
-                }
-                "quit" => {
-                    std::process::exit(0);
-                }
-                _ => {}
-            },
-            _ => {}
-        })
-        .on_window_event(|event| match event.event() {
-            WindowEvent::CloseRequested { api, .. } => {
-                api.prevent_close();
-                event.window().hide().unwrap();
-            }
-            _ => {}
-        })
-        .build(tauri::generate_context!())
-        .expect("error while building tauri application")
-        .run(|_app, event| match event {
-            RunEvent::ExitRequested { api, .. } => api.prevent_exit(),
-            _ => {}
-        });
+        .invoke_handler(tauri::generate_handler![greet])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }
