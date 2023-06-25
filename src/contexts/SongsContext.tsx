@@ -1,12 +1,13 @@
 import { useContext, createContext, type PropsWithChildren } from "react";
 import type { Song } from "../types/song";
 import { usePocketBase } from "./PocketBaseContext";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type QueryStatus } from "@tanstack/react-query";
 
 const SongsContext = createContext<
   | {
       songs: Song[];
       refetch: () => void;
+      status: QueryStatus;
     }
   | undefined
 >(undefined);
@@ -22,7 +23,7 @@ export function useSongs() {
 export function SongsProvider({ children }: PropsWithChildren) {
   const pb = usePocketBase();
 
-  const { data, refetch } = useQuery({
+  const { data, refetch, status } = useQuery({
     queryKey: ["songs"],
     async queryFn() {
       const songs = await pb.collection("songs").getFullList<Song>();
@@ -35,6 +36,7 @@ export function SongsProvider({ children }: PropsWithChildren) {
       value={{
         songs: data ?? [],
         refetch,
+        status,
       }}
     >
       {children}
