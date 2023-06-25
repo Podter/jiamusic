@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import { useEffect } from "react";
 
 import Home from "./pages/Home";
-import { useEffect } from "react";
 
 export default function App() {
   useEffect(() => {
