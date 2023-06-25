@@ -13,6 +13,7 @@ import {
 import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
 import { appWindow } from "@tauri-apps/api/window";
 import useStore from "../../hooks/useStore";
+import { open } from "@tauri-apps/api/shell";
 
 export default function Menu() {
   const [autostart, setAutostart] = useState<boolean | undefined>(undefined);
@@ -101,7 +102,13 @@ export default function Menu() {
       <MenubarMenu>
         <MenubarTrigger>Help</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Open GitHub</MenubarItem>
+          <MenubarItem
+            onSelect={async () =>
+              await open("https://github.com/Podter/jiamusic")
+            }
+          >
+            Open GitHub
+          </MenubarItem>
           <MenubarItem>About JIΛmusic</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
