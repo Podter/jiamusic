@@ -24,8 +24,11 @@ import useStore from "../../hooks/useStore";
 import { open } from "@tauri-apps/api/shell";
 import icon from "../../assets/icon.png";
 import logo from "../../assets/logo.png";
+import { useSongs } from "../../contexts/SongsContext";
 
 export default function Menu() {
+  const { refetch } = useSongs();
+
   const [autostart, setAutostart] = useState<boolean | undefined>(undefined);
   const [theme, setTheme] = useStore<"light" | "dark">(
     "theme",
@@ -68,7 +71,7 @@ export default function Menu() {
         <MenubarMenu>
           <MenubarTrigger>File</MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>Refresh</MenubarItem>
+            <MenubarItem onSelect={() => refetch()}>Refresh</MenubarItem>
             <MenubarSeparator />
             <MenubarItem onSelect={() => appWindow.hide()}>
               Hide Window
