@@ -13,7 +13,16 @@ export default function Titlebar() {
   const [maximized, setMaximized] = useState(false);
 
   useEffect(() => {
-    appWindow.isMaximized().then((maximized) => setMaximized(maximized));
+    function handler() {
+      appWindow.isMaximized().then((maximized) => setMaximized(maximized));
+    }
+
+    handler();
+    const unlisten = appWindow.onResized(handler);
+
+    return () => {
+      unlisten.then((unlisten) => unlisten());
+    };
   }, []);
 
   return (
@@ -26,13 +35,7 @@ export default function Titlebar() {
         <TitlebarButton onClick={() => appWindow.minimize()}>
           <Subtract16Regular />
         </TitlebarButton>
-        <TitlebarButton
-          onClick={async () => {
-            await appWindow.toggleMaximize();
-            const isMaximized = await appWindow.isMaximized();
-            setMaximized(isMaximized);
-          }}
-        >
+        <TitlebarButton onClick={() => appWindow.toggleMaximize()}>
           {maximized ? <SquareMultiple16Regular /> : <Maximize16Regular />}
         </TitlebarButton>
         <TitlebarButton
