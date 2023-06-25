@@ -12,13 +12,26 @@ import {
 } from "../ui/Menubar";
 import { enable, isEnabled, disable } from "tauri-plugin-autostart-api";
 import { appWindow } from "@tauri-apps/api/window";
+import useStore from "../../hooks/useStore";
 
 export default function Menu() {
   const [autostart, setAutostart] = useState<boolean | undefined>(undefined);
+  const [theme, setTheme] = useStore<"light" | "dark">(
+    "theme",
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
 
   useEffect(() => {
     isEnabled().then((enabled) => setAutostart(enabled));
   }, []);
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
 
   return (
     <Menubar className="h-8 border-none">
@@ -69,9 +82,19 @@ export default function Menu() {
             Autostart
           </MenubarCheckboxItem>
           <MenubarSeparator />
-          <MenubarRadioGroup value="light">
-            <MenubarRadioItem value="light">Light theme</MenubarRadioItem>
-            <MenubarRadioItem value="dark">Dark theme</MenubarRadioItem>
+          <MenubarRadioGroup value={theme ?? undefined}>
+            <MenubarRadioItem
+              value="light"
+              onSelect={async () => await setTheme("light")}
+            >
+              Light theme
+            </MenubarRadioItem>
+            <MenubarRadioItem
+              value="dark"
+              onSelect={async () => await setTheme("dark")}
+            >
+              Dark theme
+            </MenubarRadioItem>
           </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
