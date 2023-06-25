@@ -1,7 +1,7 @@
 import { useContext, createContext, type PropsWithChildren } from "react";
 import type { Song } from "../types/song";
 import { usePocketBase } from "./PocketBaseContext";
-import { useQuery, type QueryStatus } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const SongsContext = createContext<
   | {
