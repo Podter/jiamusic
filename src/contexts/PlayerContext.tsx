@@ -111,6 +111,18 @@ export function PlayerProvider({ children }: PropsWithChildren) {
     if (song) {
       const songUrl = pb.getFileUrl(song, song.audio);
       audioRef.current.src = songUrl;
+
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: song.title,
+          artist: song.artist,
+          artwork: [
+            {
+              src: pb.getFileUrl(song, song.album_cover),
+            },
+          ],
+        });
+      }
     }
   }, [song]);
 
