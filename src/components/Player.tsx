@@ -10,50 +10,72 @@ import {
   ArrowRepeatAll24Filled,
   ArrowShuffleOff24Filled,
   ArrowRepeatAllOff24Filled,
-  Heart20Filled,
-  Heart20Regular,
 } from "@fluentui/react-icons";
 import { Slider } from "./ui/Slider";
-import { cn } from "../lib/utils";
+import { cn, fancyTimeFormat } from "../lib/utils";
+import { usePocketBase } from "../contexts/PocketBaseContext";
+import { usePlayer } from "../contexts/PlayerContext";
+import { useState } from "react";
 
 export default function Player() {
+  const pb = usePocketBase();
+  const {
+    song,
+    shuffle,
+    setShuffle,
+    repeat,
+    setRepeat,
+    volume,
+    setVolume,
+    muted,
+    audioRef,
+    setMuted,
+    skipBack,
+    skipNext,
+    togglePlayPause,
+    playing,
+    time,
+    duration,
+    seek,
+  } = usePlayer();
+
+  const [newTime, setNewTime] = useState<number | undefined>(undefined);
+
   return (
     <div className="w-full h-32 fixed bottom-0 left-0 right-0 bg-background border-t border-border z-30 px-4">
       <div className="relative w-full h-full flex flex-col justify-center items-center gap-4">
-        <div className="absolute left-0 flex flex-row h-full justify-start items-center">
-          <img
-            src="https://jiamusic.podter.me/api/files/qknlb4iwr7eqndg/3dpcvfyrbd3pssr/blob_so6sRNFsBr.png"
-            alt="A Deal With Papi"
-            className="rounded-lg"
-            width={96}
-            height={96}
-          />
-          <div className="flex flex-col ml-3 gap-1">
-            <p className="font-semibold leading-none tracking-tight">
-              A Deal With Papi
-            </p>
-            <p className="text-sm text-muted-foreground">@DawnofCupcakKe</p>
+        {song && (
+          <div className="absolute left-0 flex flex-row h-full justify-start items-center">
+            <img
+              src={pb.getFileUrl(song, song.album_cover)}
+              alt={song.title}
+              className="rounded-lg"
+              width={96}
+              height={96}
+            />
+            <div className="flex flex-col ml-3 gap-1">
+              <p className="font-semibold leading-none tracking-tight">
+                {song.title}
+              </p>
+              <p className="text-sm text-muted-foreground">{song.artist}</p>
+            </div>
           </div>
-        </div>
+        )}
         <div className="absolute right-0 flex flex-row h-full justify-end items-center w-56">
           <Button
             size="sm"
             className="rounded-full h-8 px-[0.375rem]"
             variant="ghost"
-            // onClick={controls.toggleMute}
+            onClick={() => setMuted((muted) => !muted)}
           >
-            {/* {audioState.muted ? <SpeakerMute20Filled /> : <Speaker220Filled />} */}
-            <Speaker220Filled />
+            {muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
           </Button>
           <Slider
-            // value={[state.volume]}
+            value={[volume]}
             max={100}
-            // onValueChange={(v) => controls.setVolume(v[0])}
-            className={cn(
-              "scale-75 -mx-4"
-              // , audioState.muted && "opacity-50"
-            )}
-            // disabled={audioState.muted}
+            onValueChange={(v) => setVolume(v[0])}
+            className={cn("scale-75 -mx-4", muted && "opacity-50")}
+            disabled={muted}
           />
         </div>
         <div className="flex flex-row justify-center items-center gap-3">
@@ -61,36 +83,34 @@ export default function Player() {
             size="lg"
             className="rounded-full h-10 px-2"
             variant="ghost"
-            // onClick={() => controls.setRepeat((repeat) => !repeat)}
+            onClick={() => setRepeat((repeat) => !repeat)}
           >
-            {/* {state.repeat ? (
+            {repeat ? (
               <ArrowRepeatAll24Filled />
             ) : (
               <ArrowRepeatAllOff24Filled />
-            )} */}
-            <ArrowRepeatAllOff24Filled />
+            )}
           </Button>
           <Button
             size="lg"
             className="rounded-full h-12 px-[0.625rem]"
             variant="ghost"
-            // onClick={controls.skipBack}
+            onClick={skipBack}
           >
             <Previous28Filled />
           </Button>
           <Button
             size="lg"
             className="rounded-full h-14 px-3"
-            // onClick={controls.togglePlayPause}
+            onClick={togglePlayPause}
           >
-            {/* {audioState.playing ? <Pause32Filled /> : <Play32Filled />} */}
-            <Pause32Filled />
+            {playing ? <Pause32Filled /> : <Play32Filled />}
           </Button>
           <Button
             size="lg"
             className="rounded-full h-12 px-[0.625rem]"
             variant="ghost"
-            // onClick={controls.skipNext}
+            onClick={skipNext}
           >
             <Next28Filled />
           </Button>
@@ -98,38 +118,33 @@ export default function Player() {
             size="lg"
             className="rounded-full h-10 px-2"
             variant="ghost"
-            // onClick={() => controls.setShuffle((shuffle) => !shuffle)}
+            onClick={() => setShuffle((shuffle) => !shuffle)}
           >
-            {/* {state.shuffle ? (
-              <ArrowShuffle24Filled />
-            ) : (
-              <ArrowShuffleOff24Filled />
-            )} */}
-            <ArrowShuffleOff24Filled />
+            {shuffle ? <ArrowShuffle24Filled /> : <ArrowShuffleOff24Filled />}
           </Button>
         </div>
         <div className="flex flex-row justify-center items-center w-2/5 gap-3">
           <p className="text-sm text-muted-foreground">
-            {/* {fancyTimeFormat(newTime || audioState.time)} */}
-            00:00
+            {fancyTimeFormat(newTime ?? time)}
           </p>
           <Slider
-            // value={[newTime || audioState.time]}
-            // max={audioState.duration}
+            value={[newTime ?? time]}
+            max={duration}
             step={1}
-            // onValueChange={(value) => {
-            //   audioControls.pause();
-            //   setNewTime(value[0]);
-            // }}
-            // onValueCommit={async (value) => {
-            //   audioControls.seek(value[0]);
-            //   await audioControls.play();
-            //   setNewTime(undefined);
-            // }}
+            onValueChange={(value) => {
+              if (!audioRef.current) return;
+              audioRef.current.pause();
+              setNewTime(value[0]);
+            }}
+            onValueCommit={async (value) => {
+              if (!audioRef.current) return;
+              seek(value[0]);
+              await audioRef.current.play();
+              setNewTime(undefined);
+            }}
           />
           <p className="text-sm text-muted-foreground">
-            {/* {fancyTimeFormat(audioState.duration)} */}
-            00:00
+            {fancyTimeFormat(duration)}
           </p>
         </div>
       </div>
