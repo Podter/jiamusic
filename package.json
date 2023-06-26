@@ -24,6 +24,8 @@
   "devDependencies": {
     "@fluentui/react-icons": "^2.0.204",
     "@fontsource/inter": "^5.0.3",
+    "@iconify/icons-svg-spinners": "^1.2.0",
+    "@iconify/react": "^4.1.1",
     "@radix-ui/react-dialog": "^1.0.4",
     "@radix-ui/react-menubar": "^1.0.3",
     "@radix-ui/react-slider": "^1.1.2",
