@@ -27,6 +27,10 @@
         "unmaximize": true,
         "unminimize": true,
         "startDragging": true
+      },
+      "process": {
+        "all": false,
+        "exit": true
       }
     },
     "bundle": {
