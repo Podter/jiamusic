@@ -26,6 +26,7 @@ import icon from "../../assets/icon.png";
 import logo from "../../assets/logo.png";
 import { useSongs } from "../../contexts/SongsContext";
 import { usePlayer } from "../../contexts/PlayerContext";
+import { exit } from "@tauri-apps/api/process";
 
 export default function Menu() {
   const { refetch } = useSongs();
@@ -89,7 +90,7 @@ export default function Menu() {
             <MenubarItem onSelect={() => appWindow.hide()}>
               Hide Window
             </MenubarItem>
-            <MenubarItem onSelect={() => appWindow.close()}>Quit</MenubarItem>
+            <MenubarItem onSelect={() => exit(0)}>Quit</MenubarItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>

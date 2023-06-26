@@ -40,7 +40,7 @@ export default function Titlebar() {
         </TitlebarButton>
         <TitlebarButton
           className="hover:text-destructive-foreground hover:bg-destructive/90"
-          onClick={() => appWindow.close()}
+          onClick={() => appWindow.hide()}
         >
           <Dismiss16Regular />
         </TitlebarButton>
