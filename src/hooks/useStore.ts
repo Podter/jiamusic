@@ -23,8 +23,6 @@ export default function useStore<T>(
     return () => {
       unlisten.then((unlisten) => unlisten());
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function setter(value: T) {
