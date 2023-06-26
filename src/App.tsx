@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import { useEffect } from "react";
 
 import Home from "./pages/Home";
+import Search from "./pages/Search";
 
 export default function App() {
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="search" element={<Search />} />
         </Route>
       </Routes>
     </BrowserRouter>

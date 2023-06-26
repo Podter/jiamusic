@@ -24,7 +24,7 @@ export default function Sidebar() {
             className="w-full justify-start"
             asChild
           >
-            <Link to="/">
+            <Link to="/search">
               <Search12Regular className="mr-2 h-4 w-4" />
               Search
             </Link>
