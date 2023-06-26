@@ -27,6 +27,7 @@ export default function useStore<T>(
 
   async function setter(value: T) {
     await store.set(key, value);
+    await store.save();
   }
 
   return [value, setter, key];
