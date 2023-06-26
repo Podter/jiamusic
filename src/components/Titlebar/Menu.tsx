@@ -25,9 +25,22 @@ import { open } from "@tauri-apps/api/shell";
 import icon from "../../assets/icon.png";
 import logo from "../../assets/logo.png";
 import { useSongs } from "../../contexts/SongsContext";
+import { usePlayer } from "../../contexts/PlayerContext";
 
 export default function Menu() {
   const { refetch } = useSongs();
+  const {
+    playing,
+    togglePlayPause,
+    skipBack,
+    skipNext,
+    shuffle,
+    setShuffle,
+    repeat,
+    setRepeat,
+    muted,
+    setMuted,
+  } = usePlayer();
 
   const [autostart, setAutostart] = useState<boolean | undefined>(undefined);
   const [theme, setTheme] = useStore<"light" | "dark">(
@@ -77,6 +90,37 @@ export default function Menu() {
               Hide Window
             </MenubarItem>
             <MenubarItem onSelect={() => appWindow.close()}>Quit</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>Playback</MenubarTrigger>
+          <MenubarContent>
+            <MenubarItem onSelect={() => togglePlayPause()}>
+              {playing ? "Pause" : "Play"}
+            </MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem onSelect={() => skipNext()}>Next</MenubarItem>
+            <MenubarItem onSelect={() => skipBack()}>Previous</MenubarItem>
+            <MenubarSeparator />
+            <MenubarCheckboxItem
+              checked={shuffle ?? false}
+              onSelect={async () => await setShuffle(!shuffle)}
+            >
+              Shuffle
+            </MenubarCheckboxItem>
+            <MenubarCheckboxItem
+              checked={repeat ?? false}
+              onSelect={async () => await setRepeat(!repeat)}
+            >
+              Repeat
+            </MenubarCheckboxItem>
+            <MenubarSeparator />
+            <MenubarCheckboxItem
+              checked={muted ?? false}
+              onSelect={async () => await setMuted(!muted)}
+            >
+              Muted
+            </MenubarCheckboxItem>
           </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
