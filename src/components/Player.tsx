@@ -66,16 +66,16 @@ export default function Player() {
             size="sm"
             className="rounded-full h-8 px-[0.375rem]"
             variant="ghost"
-            onClick={() => setMuted((muted) => !muted)}
+            onClick={async () => await setMuted(!muted)}
           >
             {muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
           </Button>
           <Slider
-            value={[volume]}
+            value={[volume ?? 75]}
             max={100}
             onValueChange={(v) => setVolume(v[0])}
             className={cn("scale-75 -mx-4", muted && "opacity-50")}
-            disabled={muted}
+            disabled={muted ?? false}
           />
         </div>
         <div className="flex flex-row justify-center items-center gap-3">
@@ -83,7 +83,7 @@ export default function Player() {
             size="lg"
             className="rounded-full h-10 px-2"
             variant="ghost"
-            onClick={() => setRepeat((repeat) => !repeat)}
+            onClick={async () => await setRepeat(!repeat)}
           >
             {repeat ? (
               <ArrowRepeatAll24Filled />
@@ -118,7 +118,7 @@ export default function Player() {
             size="lg"
             className="rounded-full h-10 px-2"
             variant="ghost"
-            onClick={() => setShuffle((shuffle) => !shuffle)}
+            onClick={async () => await setShuffle(!shuffle)}
           >
             {shuffle ? <ArrowShuffle24Filled /> : <ArrowShuffleOff24Filled />}
           </Button>

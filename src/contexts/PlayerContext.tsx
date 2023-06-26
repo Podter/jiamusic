@@ -12,19 +12,20 @@ import {
 import type { Song } from "../types/song";
 import { usePocketBase } from "./PocketBaseContext";
 import { useSongs } from "./SongsContext";
+import useStore from "../hooks/useStore";
 
 const PlayerContext = createContext<
   | {
       song?: Song;
       setSong: Dispatch<SetStateAction<Song | undefined>>;
-      shuffle: boolean;
-      setShuffle: Dispatch<SetStateAction<boolean>>;
-      repeat: boolean;
-      setRepeat: Dispatch<SetStateAction<boolean>>;
-      volume: number;
-      setVolume: Dispatch<SetStateAction<number>>;
-      muted: boolean;
-      setMuted: Dispatch<SetStateAction<boolean>>;
+      shuffle: boolean | null;
+      setShuffle: (value: boolean) => Promise<void>;
+      repeat: boolean | null;
+      setRepeat: (value: boolean) => Promise<void>;
+      volume: number | null;
+      setVolume: (value: number) => Promise<void>;
+      muted: boolean | null;
+      setMuted: (value: boolean) => Promise<void>;
       playing: boolean;
       togglePlayPause: () => void;
       time: number;
@@ -55,10 +56,10 @@ export function PlayerProvider({ children }: PropsWithChildren) {
 
   // State
   const [song, setSong] = useState<Song | undefined>(undefined);
-  const [shuffle, setShuffle] = useState(false);
-  const [repeat, setRepeat] = useState(false);
-  const [volume, setVolume] = useState(50);
-  const [muted, setMuted] = useState(false);
+  const [shuffle, setShuffle] = useStore("shuffle", false);
+  const [repeat, setRepeat] = useStore("repeat", false);
+  const [volume, setVolume] = useStore("volume", 50);
+  const [muted, setMuted] = useStore("muted", false);
   const [playing, setPlaying] = useState(false);
   const [time, setTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -117,7 +118,7 @@ export function PlayerProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     if (!audioRef.current) return;
 
-    audioRef.current.volume = volume / 100;
+    audioRef.current.volume = (volume ?? 75) / 100;
   }, [volume]);
 
   return (
@@ -147,7 +148,7 @@ export function PlayerProvider({ children }: PropsWithChildren) {
       <audio
         ref={audioRef}
         src={song ? pb.getFileUrl(song, song.audio) : ""}
-        muted={muted}
+        muted={muted ?? false}
         onCanPlay={() => {
           if (!audioRef.current) return;
           audioRef.current.play();
