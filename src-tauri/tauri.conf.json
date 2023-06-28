@@ -54,6 +54,12 @@
           "license": "../LICENSE",
           "installerIcon": "icons/icon.ico"
         }
+      },
+      "macOS": {
+        "license": "../LICENSE"
+      },
+      "appimage": {
+        "bundleMediaFramework": true
       }
     },
     "security": {
