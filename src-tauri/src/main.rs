@@ -33,7 +33,7 @@ fn main() {
         }))
         .plugin(tauri_plugin_autostart::init(
             MacosLauncher::LaunchAgent,
-            Some(vec![]),
+            Some(vec!["--hide"]),
         ))
         .plugin(tauri_plugin_store::Builder::default().build())
         .setup(|app| {
