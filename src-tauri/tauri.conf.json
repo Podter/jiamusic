@@ -78,6 +78,15 @@
     "systemTray": {
       "iconPath": "icons/32x32.png",
       "iconAsTemplate": true
+    },
+    "cli": {
+      "args": [
+        {
+          "name": "hide",
+          "takesValue": false,
+          "description": "Start the app hidden in the system tray"
+        }
+      ]
     }
   }
 }

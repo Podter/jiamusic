@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use serde_json::Value::Bool;
 use tauri::{
     CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem,
     WindowEvent,
@@ -40,6 +41,15 @@ fn main() {
 
             #[cfg(not(target_os = "linux"))]
             set_shadow(&window, true).expect("Unsupported platform!");
+
+            match app.get_cli_matches() {
+                Ok(matches) => {
+                    if matches.args.get("hide").unwrap().value == Bool(true) {
+                        window.hide().unwrap();
+                    }
+                }
+                Err(_) => {}
+            }
 
             Ok(())
         })
