@@ -1,0 +1,87 @@
+[
+  {
+    "id": "qknlb4iwr7eqndg",
+    "name": "songs",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "jtb5lkl4",
+        "name": "title",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "oliblt8f",
+        "name": "audio",
+        "type": "file",
+        "system": false,
+        "required": true,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [
+            "audio/mpeg",
+            "video/webm"
+          ],
+          "thumbs": [],
+          "protected": false
+        }
+      },
+      {
+        "id": "nw1exjqe",
+        "name": "artist",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "g1eohdii",
+        "name": "album_cover",
+        "type": "file",
+        "system": false,
+        "required": true,
+        "options": {
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "mimeTypes": [
+            "image/jpeg",
+            "image/png"
+          ],
+          "thumbs": [],
+          "protected": false
+        }
+      },
+      {
+        "id": "kyn10iev",
+        "name": "source",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {}
+  }
+]
