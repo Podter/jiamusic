@@ -45,7 +45,16 @@
         "icons/128x128@2x.png",
         "icons/icon.icns",
         "icons/icon.ico"
-      ]
+      ],
+      "copyright": "© 2022-2023 Podter",
+      "longDescription": "A music streaming service app by JIΛFEI",
+      "shortDescription": "A music streaming service app by JIΛFEI",
+      "windows": {
+        "nsis": {
+          "license": "../LICENSE",
+          "installerIcon": "icons/icon.ico"
+        }
+      }
     },
     "security": {
       "csp": null
