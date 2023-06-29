@@ -30,7 +30,8 @@
       },
       "process": {
         "all": false,
-        "exit": true
+        "exit": true,
+        "relaunch": true
       }
     },
     "bundle": {
@@ -90,11 +91,9 @@
     },
     "updater": {
       "active": true,
-      "dialog": true,
+      "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEzQUUzRkRCMUJDNjVCRjIKUldUeVc4WWIyeit1RXo5bEtBcnpNeFg0Zk9vWktDUlRsSml2V09ERjBRc1plU1ZvZUNhTGNLL2EK",
-      "endpoints": [
-        "https://github.com/Podter/jiamusic/releases/download/main/latest.json"
-      ]
+      "endpoints": ["http://localhost:3000/latest.json"]
     }
   }
 }
