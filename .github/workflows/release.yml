@@ -46,7 +46,7 @@ jobs:
         run: pnpm install
 
       - name: Build the app
-        uses: Podter/tauri-action@dev
+        uses: Podter/jiamusic@action
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
