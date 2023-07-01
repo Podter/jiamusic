@@ -97,13 +97,13 @@ export async function uploadVersionJSON({
   }
 
   const assetNames = new Set(
-    artifacts.map((p) =>
-      getAssetName(p.path)
-        .trim()
-        .replace(/ /g, '.')
-        .replace(/[ Λ.]/g, '.')
-        .replace(/[ λ.]/g, '.')
-    ) // GitHub replaces spaces, letter Λ and λ in asset names with dots
+    artifacts.map(
+      (p) =>
+        getAssetName(p.path)
+          .trim()
+          .replace(/ /g, '.') // GitHub replaces spaces in asset names with dots
+          .replace(/(JI\.|ji-\.)/g, 'jia') // replace "JI." and "ji-." with "jia"
+    )
   );
   let downloadUrl;
   {

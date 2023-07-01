@@ -53,7 +53,8 @@ export async function uploadAssets(
 
     await github.rest.repos.uploadReleaseAsset({
       headers,
-      name: assetName,
+      // replace "JI." and "ji-." with "jia"
+      name: assetName.trim().replace(/(JI\.|ji-\.)/g, 'jia'),
       // https://github.com/tauri-apps/tauri-action/pull/45
       // @ts-ignore error TS2322: Type 'Buffer' is not assignable to type 'string'.
       data: fs.readFileSync(asset.path),
