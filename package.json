@@ -1,40 +1,55 @@
 {
-  "name": "jiamusic",
-  "version": "1.0.2",
-  "type": "module",
-  "author": "jiafeitech",
-  "repository": "https://github.com/jiafeitech/jiamusic",
+  "name": "tauri-action",
+  "version": "0.4.2",
+  "description": "Tauri GitHub Action",
+  "contributors": [
+    "Tauri Programme within The Commons Conservancy"
+  ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "tauri": "tauri",
-    "dev": "tauri dev",
-    "build": "tauri build",
-    "vite:dev": "vite",
-    "vite:build": "tsc && vite build",
-    "icons": "tauri icon ./src-tauri/icons/icon.png"
+    "build": "ncc build src/index.ts -o dist -m",
+    "lint": "eslint src/**",
+    "format": "prettier --write src/** action.yml README.md",
+    "format:check": "prettier --check src/** action.yml README.md"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tauri-apps/tauri-action.git"
+  },
+  "keywords": [
+    "actions",
+    "tauri"
+  ],
   "dependencies": {
-    "@tauri-apps/api": "^1.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.6.1"
+    "@actions/core": "1.10.0",
+    "@actions/github": "5.1.1",
+    "@iarna/toml": "2.2.5",
+    "execa": "7.1.1",
+    "glob-gitignore": "^1.0.14",
+    "ignore": "5.2.4",
+    "json5": "2.2.3",
+    "lodash.merge": "^4.6.2",
+    "string-argv": "0.3.2",
+    "tslib": "2.5.3"
   },
   "devDependencies": {
-    "@fluentui/react-icons": "^2.0.190",
-    "@tauri-apps/cli": "^1.2.2",
-    "@types/node": "^18.7.10",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^3.0.0",
-    "autoprefixer": "^10.4.13",
-    "daisyui": "^2.46.0",
-    "fuse.js": "^6.6.2",
-    "pocketbase": "^0.9.1",
-    "postcss": "^8.4.20",
-    "react-use": "^17.4.0",
-    "tailwind-scrollbar": "^2.1.0",
-    "tailwindcss": "^3.2.4",
-    "typescript": "^4.6.4",
-    "vite": "^4.0.0"
+    "@types/node": "16.18.37",
+    "@typescript-eslint/eslint-plugin": "5.60.1",
+    "@typescript-eslint/parser": "5.60.1",
+    "@vercel/ncc": "0.36.1",
+    "covector": "0.9.0",
+    "eslint": "8.43.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-config-standard-with-typescript": "35.0.0",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-n": "15.7.0",
+    "eslint-plugin-promise": "6.1.1",
+    "prettier": "2.8.8",
+    "typescript": "5.1.5"
+  },
+  "engines": {
+    "pnpm": ">=7.33.0"
   }
 }

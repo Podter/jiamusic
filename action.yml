@@ -1,0 +1,65 @@
+name: 'tauri-action'
+description: 'Build tauri binaries for MacOS, Windows and Linux'
+icon: 'download-cloud'
+color: 'blue'
+author: 'Lucas Nogueira <lucas@tauri.studio>'
+inputs:
+  releaseId:
+    description: 'The id of the release to upload artifacts as release assets'
+  tagName:
+    description: 'The tag name of the release to create'
+  releaseName:
+    description: 'The name of the release to create'
+  releaseBody:
+    description: 'The body of the release to create'
+  releaseDraft:
+    description: 'Whether the release to create is a draft or not'
+    default: false
+  prerelease:
+    description: 'Whether the release to create is a prerelease or not'
+    default: false
+  releaseCommitish:
+    description: 'Any branch or commit SHA the Git tag is created from, unused if the Git tag already exists. Default: SHA of current commit'
+  projectPath:
+    description: 'path to the root of the project that will be built'
+    default: '.'
+  distPath:
+    description: 'path to the distributable folder with your index.html and JS/CSS'
+  iconPath:
+    description: 'path to the PNG icon to use as app icon, relative to the projectPath'
+  includeDebug:
+    description: 'whether to include a debug build or not'
+    default: false
+  includeRelease:
+    description: 'whether to include a release build or not'
+    default: true
+  includeUpdaterJson:
+    description: 'whether to upload a static JSON file for the updater using GitHub Releases as the CDN'
+    default: true
+  updaterJsonPreferNsis:
+    description: 'whether the action will use the NSIS (setup.exe) or WiX (.msi) bundles for the updater JSON if both types exist. Will default to false for Tauri v1 and true for Tauri v2+'
+  updaterJsonKeepUniversal:
+    description: 'whether the updater JSON file should add universal macOS as darwin-universal on top of using it in the darwin-aarch64 and darwin-x86_64 fields if no native builds exist.'
+    default: false
+  tauriScript:
+    description: 'the script to run to build the Tauri app'
+  args:
+    description: 'arguments for the tauri command'
+  bundleIdentifier:
+    description: 'the bundle identifier to inject when initializing the Tauri app'
+  owner:
+    description: 'The account owner of the repository'
+  repo:
+    description: 'The name of the repository'
+outputs:
+  releaseId:
+    description: 'The ID of the created release'
+  releaseHtmlUrl:
+    description: 'The URL users can navigate to in order to view the created release'
+  releaseUploadUrl:
+    description: 'The URL for uploading assets to the created release'
+  artifactPaths:
+    description: 'The paths of the generated artifacts'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
