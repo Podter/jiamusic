@@ -49,13 +49,12 @@ export async function uploadAssets(
       });
     }
 
-    const name = assetName.trim().replace(/(JI\.|ji-\.)/g, 'jia');
+    const name = assetName.trim().replace(/(JI[Λλ]|ji-[Λλ])/g, 'jia'); // replace "JIΛ" and "ji-λ" with "jia"
 
     console.log(`Uploading ${assetName} as ${name}...`);
 
     await github.rest.repos.uploadReleaseAsset({
       headers,
-      // replace "JI." and "ji-." with "jia"
       name,
       // https://github.com/tauri-apps/tauri-action/pull/45
       // @ts-ignore error TS2322: Type 'Buffer' is not assignable to type 'string'.
