@@ -1,15 +1,44 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import Layout from "./components/Layout";
+import { useEffect } from "react";
+import { useToast } from "./hooks/useToast";
+import { checkUpdate, installUpdate } from "@tauri-apps/api/updater";
+import { relaunch } from "@tauri-apps/api/process";
+import { ToastAction } from "./components/ui/Toast";
 
 import Home from "./pages/Home";
-// import Settings from "./pages/Settings";
 import Search from "./pages/Search";
-import { E } from "@tauri-apps/api/shell-cbf4da8b";
 
 export default function App() {
-  // Disable right click menu
-  document.addEventListener("contextmenu", (e) => e.preventDefault());
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Disable right click
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+    // Check for updates
+    checkUpdate()
+      .then(({ shouldUpdate, manifest }) => {
+        if (shouldUpdate) {
+          toast({
+            title: "Update available",
+            description: `Version ${manifest?.version} is available.`,
+            action: (
+              <ToastAction
+                altText="Install and restart"
+                onClick={async () => {
+                  await installUpdate();
+                  await relaunch();
+                }}
+              >
+                Install and restart
+              </ToastAction>
+            ),
+          });
+        }
+      })
+      .catch((e) => console.error(e));
+  }, []);
 
   return (
     <BrowserRouter>
@@ -17,7 +46,6 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="search" element={<Search />} />
-          {/* <Route path="settings" element={<Settings />} /> */}
         </Route>
       </Routes>
     </BrowserRouter>

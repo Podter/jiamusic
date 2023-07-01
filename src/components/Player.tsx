@@ -1,288 +1,153 @@
+import { Button } from "./ui/Button";
 import {
-  Play20Filled,
-  Pause20Filled,
-  Next20Filled,
-  Previous20Filled,
+  Play32Filled,
+  Pause32Filled,
+  Next28Filled,
+  Previous28Filled,
   Speaker220Filled,
   SpeakerMute20Filled,
-  ArrowShuffle20Filled,
-  ArrowRepeatAll20Filled,
-  ArrowShuffleOff20Filled,
-  ArrowRepeatAllOff20Filled,
+  ArrowShuffle24Filled,
+  ArrowRepeatAll24Filled,
+  ArrowShuffleOff24Filled,
+  ArrowRepeatAllOff24Filled,
 } from "@fluentui/react-icons";
-import { useCurrentSong } from "../contexts/CurrentSongContext";
+import { Slider } from "./ui/Slider";
+import { cn, fancyTimeFormat } from "../lib/utils";
 import { usePocketBase } from "../contexts/PocketBaseContext";
-import { useSongList } from "../contexts/SongListContext";
-import { useNavigate } from "react-router-dom";
-import fancyTimeFormat from "../utils/fancyTimeFormat";
-import { useAudio } from "react-use";
-import { useEffect, useState } from "react";
-import { Record } from "pocketbase";
-import stringToBoolean from "../utils/stringToBoolean";
-
-type LocalStorageData = {
-  volume: number;
-  shuffle: boolean;
-  repeat: boolean;
-};
+import { usePlayer } from "../contexts/PlayerContext";
+import { useState } from "react";
 
 export default function Player() {
-  const currentSong = useCurrentSong();
-  const songList = useSongList();
   const pb = usePocketBase();
-  const navigate = useNavigate();
+  const {
+    song,
+    shuffle,
+    setShuffle,
+    repeat,
+    setRepeat,
+    volume,
+    setVolume,
+    muted,
+    audioRef,
+    setMuted,
+    skipBack,
+    skipNext,
+    togglePlayPause,
+    playing,
+    time,
+    duration,
+    seek,
+  } = usePlayer();
 
-  const [audio, state, controls, audioRef] = useAudio({
-    src: "",
-  });
-
-  function getLocalStorage(): LocalStorageData {
-    const savedVolume = localStorage.getItem("volume");
-    const savedShuffle = localStorage.getItem("shuffle");
-    const savedRepeat = localStorage.getItem("repeat");
-
-    const data: LocalStorageData = {
-      volume: savedVolume ? +savedVolume : 100,
-      shuffle: savedShuffle ? stringToBoolean(savedShuffle) : false,
-      repeat: savedRepeat ? stringToBoolean(savedRepeat) : false,
-    };
-    return data;
-  }
-
-  const localStorageData = getLocalStorage();
-
-  const [volume, setVolume] = useState(localStorageData.volume);
-  const [isChanging, setIsChanging] = useState(false);
-  const [newTime, setNewTime] = useState(0);
-  const [shuffle, setShuffle] = useState(localStorageData.shuffle);
-  const [repeat, setRepeat] = useState(localStorageData.repeat);
-
-  function skipBack() {
-    const index = songList.list.findIndex(
-      (x) => x.title == currentSong.song?.title
-    );
-    if (index == 0) {
-      currentSong.setSong(songList.list[songList.list.length - 1]);
-    } else {
-      currentSong.setSong(songList.list[index - 1]);
-    }
-  }
-
-  function skipNext() {
-    const index = songList.list.findIndex(
-      (x) => x.title == currentSong.song?.title
-    );
-
-    if (index == songList.list.length - 1) {
-      currentSong.setSong(songList.list[0]);
-    } else {
-      currentSong.setSong(songList.list[index + 1]);
-    }
-  }
-
-  function playBtn() {
-    if (!currentSong.song)
-      currentSong.setSong(
-        songList.list[Math.floor(Math.random() * songList.list.length)]
-      );
-
-    if (state.playing) controls.pause();
-    else if (state.paused) controls.play();
-  }
-
-  function muteBtn() {
-    if (state.muted) controls.unmute();
-    else controls.mute();
-  }
-
-  useEffect(() => {
-    controls.volume(volume / 100);
-    localStorage.setItem("volume", `${volume}`);
-  }, [volume]);
-
-  useEffect(() => {
-    controls.pause();
-    if (currentSong.song) {
-      const songUrl =
-        pb?.getFileUrl(currentSong.song, currentSong.song.audio) || "";
-
-      (audioRef.current as any).src = songUrl;
-      document.title = currentSong.song.title;
-    }
-  }, [currentSong.song]);
-
-  audioRef.current?.addEventListener("loadeddata", controls.play);
-  audioRef.current?.addEventListener("ended", () => {
-    if (repeat) {
-      currentSong.setSong(currentSong.song as Record);
-      controls.seek(0);
-      controls.play();
-    } else if (shuffle) {
-      currentSong.setSong(
-        songList.list[Math.floor(Math.random() * songList.list.length)]
-      );
-    } else skipNext();
-  });
-
-  // So buggy
-  // useKeyPressEvent(" ", playBtn);
-  // useKeyPressEvent("ArrowLeft", () => controls.seek(state.time - 10));
-  // useKeyPressEvent("ArrowRight", () => controls.seek(state.time + 10));
-  // useKeyPressEvent(",", skipBack);
-  // useKeyPressEvent(".", skipNext);
-
-  const albumCoverUrl = currentSong.song?.album_cover
-    ? (pb?.getFileUrl(
-        currentSong.song,
-        currentSong.song?.album_cover
-      ) as string)
-    : "https://placeimg.com/256/256/arch";
+  const [newTime, setNewTime] = useState<number | undefined>(undefined);
 
   return (
-    <>
-      <div className="navbar bg-base-300 fixed bottom-0 z-30 min-h-[5rem]">
-        <div className="navbar-start">
-          {currentSong.song ? (
-            <div
-              className="tooltip"
-              data-tip={`By ${currentSong.song.artist || "Unknown"}`}
-            >
-              <button
-                className="btn btn-ghost normal-case text-xl gap-4"
-                onClick={() => {
-                  navigate("/");
-                  const card = document.getElementById(
-                    currentSong.song?.id as string
-                  );
-                  card?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                    inline: "center",
-                  });
-                }}
-              >
-                <img
-                  src={!currentSong.song ? "" : albumCoverUrl}
-                  alt="Cover"
-                  className="h-6 w-6 rounded-md"
-                />
-                {currentSong.song?.title || ""}
-              </button>
-            </div>
-          ) : (
-            <a></a>
-          )}
-        </div>
-
-        <div className="navbar-center">
-          <div
-            className="tooltip"
-            data-tip={shuffle ? "Disable shuffle" : "Enable shuffle"}
-          >
-            <button
-              className="btn btn-ghost btn-circle"
-              onClick={() => {
-                if (repeat) {
-                  setRepeat(false);
-                  localStorage.setItem("repeat", `${false}`);
-                }
-                setShuffle(!shuffle);
-                localStorage.setItem("shuffle", `${!shuffle}`);
-              }}
-            >
-              {shuffle ? <ArrowShuffle20Filled /> : <ArrowShuffleOff20Filled />}
-            </button>
-          </div>
-
-          <div className="tooltip" data-tip="Previous">
-            <button className="btn btn-ghost btn-circle" onClick={skipBack}>
-              <Previous20Filled />
-            </button>
-          </div>
-
-          <div className="tooltip" data-tip={state.playing ? "Pause" : "Play"}>
-            <button className="btn btn-ghost btn-circle" onClick={playBtn}>
-              {state.playing ? <Pause20Filled /> : <Play20Filled />}
-            </button>
-          </div>
-
-          <div className="tooltip" data-tip="Next">
-            <button className="btn btn-ghost btn-circle" onClick={skipNext}>
-              <Next20Filled />
-            </button>
-          </div>
-
-          <div
-            className="tooltip"
-            data-tip={repeat ? "Disable repeat" : "Enable repeat"}
-          >
-            <button
-              className="btn btn-ghost btn-circle"
-              onClick={() => {
-                if (shuffle) {
-                  setShuffle(false);
-                  localStorage.setItem("shuffle", `${false}`);
-                }
-                setRepeat(!repeat);
-                localStorage.setItem("repeat", `${!repeat}`);
-              }}
-            >
-              {repeat ? (
-                <ArrowRepeatAll20Filled />
-              ) : (
-                <ArrowRepeatAllOff20Filled />
-              )}
-            </button>
-          </div>
-        </div>
-
-        <div className="navbar-end">
-          <div
-            className="tooltip"
-            data-tip={`${volume} ${state.muted ? "(Muted)" : ""}`}
-          >
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={volume}
-              className={`range range-primary range-xs w-32 ${
-                state.muted ? "opacity-50" : ""
-              }`}
-              onChange={(e) => (state.muted ? {} : setVolume(+e.target.value))}
+    <div className="w-full h-32 fixed bottom-0 left-0 right-0 bg-background border-t border-border z-30 px-4">
+      <div className="relative w-full h-full flex flex-col justify-center items-center gap-4">
+        {song && (
+          <div className="absolute left-0 flex flex-row h-full justify-start items-center">
+            <img
+              src={pb.getFileUrl(song, song.album_cover)}
+              alt={song.title}
+              className="rounded-lg"
+              width={96}
+              height={96}
             />
+            <div className="flex flex-col ml-3 gap-1">
+              <p className="font-semibold leading-none tracking-tight">
+                {song.title}
+              </p>
+              <p className="text-sm text-muted-foreground">{song.artist}</p>
+            </div>
           </div>
-
-          <div className="tooltip" data-tip={state.muted ? "Unmute" : "Mute"}>
-            <button className="btn btn-ghost btn-circle mx-2" onClick={muteBtn}>
-              {state.muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
-            </button>
-          </div>
+        )}
+        <div className="absolute right-0 flex flex-row h-full justify-end items-center w-56">
+          <Button
+            size="sm"
+            className="rounded-full h-8 px-[0.375rem]"
+            variant="ghost"
+            onClick={async () => await setMuted(!muted)}
+          >
+            {muted ? <SpeakerMute20Filled /> : <Speaker220Filled />}
+          </Button>
+          <Slider
+            value={[volume ?? 75]}
+            max={100}
+            onValueChange={(v) => setVolume(v[0])}
+            className={cn("scale-75 -mx-4", muted && "opacity-50")}
+            disabled={muted ?? false}
+          />
+        </div>
+        <div className="flex flex-row justify-center items-center gap-3">
+          <Button
+            size="lg"
+            className="rounded-full h-10 px-2"
+            variant="ghost"
+            onClick={async () => await setRepeat(!repeat)}
+          >
+            {repeat ? (
+              <ArrowRepeatAll24Filled />
+            ) : (
+              <ArrowRepeatAllOff24Filled />
+            )}
+          </Button>
+          <Button
+            size="lg"
+            className="rounded-full h-12 px-[0.625rem]"
+            variant="ghost"
+            onClick={skipBack}
+          >
+            <Previous28Filled />
+          </Button>
+          <Button
+            size="lg"
+            className="rounded-full h-14 px-3"
+            onClick={togglePlayPause}
+          >
+            {playing ? <Pause32Filled /> : <Play32Filled />}
+          </Button>
+          <Button
+            size="lg"
+            className="rounded-full h-12 px-[0.625rem]"
+            variant="ghost"
+            onClick={skipNext}
+          >
+            <Next28Filled />
+          </Button>
+          <Button
+            size="lg"
+            className="rounded-full h-10 px-2"
+            variant="ghost"
+            onClick={async () => await setShuffle(!shuffle)}
+          >
+            {shuffle ? <ArrowShuffle24Filled /> : <ArrowShuffleOff24Filled />}
+          </Button>
+        </div>
+        <div className="flex flex-row justify-center items-center w-2/5 gap-3">
+          <p className="text-sm text-muted-foreground">
+            {fancyTimeFormat(newTime ?? time)}
+          </p>
+          <Slider
+            value={[newTime ?? time]}
+            max={duration}
+            step={1}
+            onValueChange={(value) => {
+              if (!audioRef.current) return;
+              audioRef.current.pause();
+              setNewTime(value[0]);
+            }}
+            onValueCommit={async (value) => {
+              if (!audioRef.current) return;
+              seek(value[0]);
+              await audioRef.current.play();
+              setNewTime(undefined);
+            }}
+          />
+          <p className="text-sm text-muted-foreground">
+            {fancyTimeFormat(duration)}
+          </p>
         </div>
       </div>
-
-      <div
-        className="tooltip w-screen -bottom-[6px] fixed z-40"
-        data-tip={`${fancyTimeFormat(
-          isChanging ? newTime : state.time
-        )}/${fancyTimeFormat(state.duration)}`}
-      >
-        <input
-          type="range"
-          min="0"
-          max={state.duration}
-          value={isChanging ? newTime : state.time}
-          className="range range-primary range-2xs  rounded-none"
-          onMouseDown={() => setIsChanging(true)}
-          onMouseUp={() => {
-            setIsChanging(false);
-            controls.seek(newTime);
-          }}
-          onChange={(e) => setNewTime(+e.target.value)}
-        />
-      </div>
-
-      {audio}
-    </>
+    </div>
   );
 }

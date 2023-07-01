@@ -1,73 +1,16 @@
 [
   {
-    "id": "_pb_users_auth_",
-    "name": "users",
-    "type": "auth",
-    "system": false,
-    "schema": [
-      {
-        "id": "users_name",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "users_avatar",
-        "name": "avatar",
-        "type": "file",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "maxSize": 5242880,
-          "mimeTypes": [
-            "image/jpg",
-            "image/jpeg",
-            "image/png",
-            "image/svg+xml",
-            "image/gif"
-          ],
-          "thumbs": null
-        }
-      }
-    ],
-    "listRule": "id = @request.auth.id",
-    "viewRule": "id = @request.auth.id",
-    "createRule": "",
-    "updateRule": "id = @request.auth.id",
-    "deleteRule": "id = @request.auth.id",
-    "options": {
-      "allowEmailAuth": true,
-      "allowOAuth2Auth": true,
-      "allowUsernameAuth": true,
-      "exceptEmailDomains": null,
-      "manageRule": null,
-      "minPasswordLength": 8,
-      "onlyEmailDomains": null,
-      "requireEmail": false
-    }
-  },
-  {
-    "id": "0aiqkie2qf2ek6a",
+    "id": "qknlb4iwr7eqndg",
     "name": "songs",
     "type": "base",
     "system": false,
     "schema": [
       {
-        "id": "5huodsdt",
+        "id": "jtb5lkl4",
         "name": "title",
         "type": "text",
         "system": false,
         "required": true,
-        "unique": false,
         "options": {
           "min": null,
           "max": null,
@@ -75,26 +18,28 @@
         }
       },
       {
-        "id": "mta7pels",
+        "id": "oliblt8f",
         "name": "audio",
         "type": "file",
         "system": false,
         "required": true,
-        "unique": false,
         "options": {
           "maxSelect": 1,
           "maxSize": 5242880,
-          "mimeTypes": ["audio/mpeg", "audio/webm"],
-          "thumbs": []
+          "mimeTypes": [
+            "audio/mpeg",
+            "video/webm"
+          ],
+          "thumbs": [],
+          "protected": false
         }
       },
       {
-        "id": "v5itdw4p",
+        "id": "nw1exjqe",
         "name": "artist",
         "type": "text",
         "system": false,
         "required": true,
-        "unique": false,
         "options": {
           "min": null,
           "max": null,
@@ -102,32 +47,28 @@
         }
       },
       {
-        "id": "hgpihuj8",
+        "id": "g1eohdii",
         "name": "album_cover",
         "type": "file",
         "system": false,
         "required": true,
-        "unique": false,
         "options": {
           "maxSelect": 1,
           "maxSize": 5242880,
           "mimeTypes": [
-            "image/jpg",
             "image/jpeg",
-            "image/png",
-            "image/svg+xml",
-            "image/gif"
+            "image/png"
           ],
-          "thumbs": []
+          "thumbs": [],
+          "protected": false
         }
       },
       {
-        "id": "u4q6cpv0",
+        "id": "kyn10iev",
         "name": "source",
         "type": "text",
         "system": false,
         "required": true,
-        "unique": false,
         "options": {
           "min": null,
           "max": null,
@@ -135,6 +76,7 @@
         }
       }
     ],
+    "indexes": [],
     "listRule": "",
     "viewRule": "",
     "createRule": null,

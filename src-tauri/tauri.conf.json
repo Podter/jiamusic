@@ -1,36 +1,45 @@
 {
   "build": {
-    "beforeDevCommand": "yarn vite:dev",
-    "beforeBuildCommand": "yarn vite:build",
+    "beforeDevCommand": "pnpm vite:dev",
+    "beforeBuildCommand": "pnpm vite:build",
     "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "distDir": "../dist",
+    "withGlobalTauri": false
   },
   "package": {
     "productName": "JIΛmusic",
-    "version": "1.0.2"
+    "version": "2.0.0"
   },
   "tauri": {
     "allowlist": {
-      "process": {
-        "exit": true
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
       },
       "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
         "show": true,
-        "hide": true
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      },
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": true
       }
     },
     "bundle": {
-      "active": true,
       "category": "Music",
-      "publisher": "jiafeitech",
-      "copyright": "",
-      "deb": {
-        "depends": []
-      },
-      "appimage": {
-        "bundleMediaFramework": true
-      },
-      "externalBin": [],
+      "publisher": "Podter",
+      "active": true,
+      "targets": ["nsis", "app", "appimage", "deb", "dmg", "updater"],
+      "identifier": "me.podter.jiamusic",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -38,52 +47,53 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.github.jiafeitech.jiamusic",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
+      "copyright": "© 2022-2023 Podter",
+      "longDescription": "A music streaming service app by JIΛFEI",
+      "shortDescription": "A music streaming service app by JIΛFEI",
       "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": "",
-        "wix": {
-          "language": {
-            "en-US": {
-              "localePath": "installer/en-US.wxl"
-            }
-          },
-          "template": "installer/main.wxs",
-          "bannerPath": "installer/banner.png",
-          "dialogImagePath": "installer/dialogImage.png"
+        "nsis": {
+          "license": "../LICENSE",
+          "installerIcon": "icons/icon.ico"
         }
+      },
+      "macOS": {
+        "license": "../LICENSE"
+      },
+      "appimage": {
+        "bundleMediaFramework": true
       }
     },
     "security": {
       "csp": null
     },
-    "updater": {
-      "active": false
-    },
     "windows": [
       {
         "fullscreen": false,
-        "height": 720,
         "resizable": true,
+        "decorations": false,
         "title": "JIΛmusic",
-        "width": 1288
+        "width": 1280,
+        "height": 720
       }
     ],
     "systemTray": {
       "iconPath": "icons/32x32.png",
       "iconAsTemplate": true
+    },
+    "cli": {
+      "args": [
+        {
+          "name": "hide",
+          "takesValue": false,
+          "description": "Start the app hidden in the system tray"
+        }
+      ]
+    },
+    "updater": {
+      "active": true,
+      "dialog": false,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEzQUUzRkRCMUJDNjVCRjIKUldUeVc4WWIyeit1RXo5bEtBcnpNeFg0Zk9vWktDUlRsSml2V09ERjBRc1plU1ZvZUNhTGNLL2EK",
+      "endpoints": ["https://jiamusic-update.podter.workers.dev"]
     }
   }
 }

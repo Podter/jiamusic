@@ -1,36 +1,45 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { Record } from "pocketbase";
-import { useSongList } from "../contexts/SongListContext";
+import SongList from "../components/SongList";
+import { useSongs } from "../contexts/SongsContext";
+import { Input } from "../components/ui/Input";
 import { useEffect, useState } from "react";
 import Fuse from "fuse.js";
-import MusicCard from "../components/MusicCard";
+import type { Song } from "../types/song";
+import { TableCaption } from "../components/ui/Table";
 
 export default function Search() {
-  const [searchParams] = useSearchParams();
-  const songList = useSongList();
-  const fuse = new Fuse(songList.list, {
+  const { songs } = useSongs();
+  const [search, setSearch] = useState("");
+
+  const fuse = new Fuse(songs, {
     keys: ["title"],
   });
-  const navigate = useNavigate();
 
-  const searchQuery = searchParams.get("query");
-
-  const [searchList, setSearchList] = useState<Fuse.FuseResult<Record>[]>([]);
+  const [results, setResults] = useState<Song[]>([]);
 
   useEffect(() => {
-    if (!searchQuery) return navigate("/");
-
-    const list = fuse.search(searchQuery);
-    setSearchList(list);
-  }, [searchQuery]);
+    const list = fuse.search(search);
+    const songs = list.map((item) => item.item);
+    setResults(songs);
+  }, [search]);
 
   return (
-    <div className="flex w-fill justify-center items-center">
-      <div className="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-10 py-24">
-        {searchList.map((song) => (
-          <MusicCard key={song.item.id} song={song.item} />
-        ))}
+    <div className="flex w-full flex-col">
+      <div className="p-4 flex flex-row items-center justify-between">
+        <h2 className="text-lg font-semibold tracking-tight">Search</h2>
+        <Input
+          className="w-72"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
+      {results.length > 0 ? (
+        <SongList songs={results} />
+      ) : !search ? (
+        <SongList songs={songs} />
+      ) : (
+        <TableCaption>No results</TableCaption>
+      )}
     </div>
   );
 }

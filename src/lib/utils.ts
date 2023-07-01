@@ -1,4 +1,11 @@
-export default function fancyTimeFormat(duration: number): string {
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export function fancyTimeFormat(duration: number): string {
   const seconds = Math.floor(duration % 60);
   const minutes = Math.floor((duration / 60) % 60);
   const hours = Math.floor((duration / 60 / 60) % 24);

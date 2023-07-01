@@ -1,10 +1,20 @@
-#![cfg_attr(
-    all(not(debug_assertions), target_os = "windows"),
-    windows_subsystem = "windows"
-)]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{CustomMenuItem, Manager, RunEvent, SystemTrayMenu, SystemTrayMenuItem, WindowEvent};
-use tauri::{SystemTray, SystemTrayEvent};
+use serde_json::Value::Bool;
+use tauri::{
+    CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem,
+    WindowEvent,
+};
+use tauri_plugin_autostart::MacosLauncher;
+
+#[cfg(not(target_os = "linux"))]
+use window_shadows::set_shadow;
+
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+    args: Vec<String>,
+    cwd: String,
+}
 
 fn main() {
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
@@ -17,6 +27,32 @@ fn main() {
     let system_tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+            app.emit_all("single-instance", Payload { args: argv, cwd })
+                .unwrap();
+        }))
+        .plugin(tauri_plugin_autostart::init(
+            MacosLauncher::LaunchAgent,
+            Some(vec!["--hide"]),
+        ))
+        .plugin(tauri_plugin_store::Builder::default().build())
+        .setup(|app| {
+            let window = app.get_window("main").unwrap();
+
+            #[cfg(not(target_os = "linux"))]
+            set_shadow(&window, true).expect("Unsupported platform!");
+
+            match app.get_cli_matches() {
+                Ok(matches) => {
+                    if matches.args.get("hide").unwrap().value == Bool(true) {
+                        window.hide().unwrap();
+                    }
+                }
+                Err(_) => {}
+            }
+
+            Ok(())
+        })
         .system_tray(system_tray)
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::DoubleClick { .. } => {
@@ -42,10 +78,6 @@ fn main() {
             }
             _ => {}
         })
-        .build(tauri::generate_context!())
-        .expect("error while building tauri application")
-        .run(|_app, event| match event {
-            RunEvent::ExitRequested { api, .. } => api.prevent_exit(),
-            _ => {}
-        });
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

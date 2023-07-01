@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="logo" src="https://raw.githubusercontent.com/jiafeitech/jiamusic/main/src-tauri/icons/128x128%402x.png">
+    <img alt="logo" src="https://raw.githubusercontent.com/Podter/jiamusic/main/src-tauri/icons/128x128%402x.png">
 </p>
 
 <h2 align="center">
@@ -21,16 +21,16 @@ Make sure you have Node.js and Rust installed and follow [this instruction](http
 
 ```bash
 npm run dev
-# or yarn
-yarn dev
+# or pnpm
+pnpm dev
 ```
 
 ### Building
 
 ```bash
 npm run build
-# or yarn
-yarn build
+# or pnpm
+pnpm build
 ```
 
 The built executable should be in `src-tauri/target/release`
@@ -41,13 +41,13 @@ The built executable should be in `src-tauri/target/release`
 
 The exported collections will be in `pocketbase/pb_schema.json`
 
-You can import collections by going to PocketBase Admin UI and click on Settings > Sync (Experimental) > Import collections and then upload the .json file
+You can import collections by going to PocketBase Admin UI and click on Settings > Import collections and then upload the .json file
 
 You can change the PocketBase base URL for this app.
 
-```typescript
-export function PocketBaseProvider({ children }: Props) {
-  const pb = new PocketBase("http://example:8090"); // Here!
+```tsx
+export function PocketBaseProvider({ children }: PropsWithChildren) {
+  const pb = new PocketBase("http://example:8090"); // Here
 
   return (
     <PocketBaseContext.Provider value={pb}>
