@@ -93,7 +93,9 @@
       "active": true,
       "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDEzQUUzRkRCMUJDNjVCRjIKUldUeVc4WWIyeit1RXo5bEtBcnpNeFg0Zk9vWktDUlRsSml2V09ERjBRc1plU1ZvZUNhTGNLL2EK",
-      "endpoints": ["http://localhost:3000/latest.json"]
+      "endpoints": [
+        "https://github.com/Podter/jiamusic/releases/latest/download/latest.json"
+      ]
     }
   }
 }
