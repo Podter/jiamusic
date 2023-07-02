@@ -65,7 +65,7 @@ async function run(): Promise<void> {
     if (targetInfo.platform === 'linux') {
       const config = {
         package: {
-          productName: 'JIAmusic',
+          productName: 'jiamusic',
         },
       };
       args.push('--config', JSON.stringify(config));
