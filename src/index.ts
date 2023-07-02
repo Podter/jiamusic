@@ -54,6 +54,23 @@ async function run(): Promise<void> {
       }
     }
 
+    const targetArgIdx = [...args].findIndex(
+      (e) => e === '-t' || e === '--target'
+    );
+    const targetPath =
+      targetArgIdx >= 0 ? [...args][targetArgIdx + 1] : undefined;
+
+    const targetInfo = getTargetInfo(targetPath);
+
+    if (targetInfo.platform === 'linux') {
+      const config = {
+        package: {
+          productName: 'JIAmusic',
+        },
+      };
+      args.push('--config', JSON.stringify(config));
+    }
+
     const options: BuildOptions = {
       distPath,
       iconPath,
@@ -62,19 +79,12 @@ async function run(): Promise<void> {
       bundleIdentifier,
     };
 
-    const targetArgIdx = [...args].findIndex(
-      (e) => e === '-t' || e === '--target'
-    );
-    const targetPath =
-      targetArgIdx >= 0 ? [...args][targetArgIdx + 1] : undefined;
-
     const configArgIdx = [...args].findIndex(
       (e) => e === '-c' || e === '--config'
     );
     const configArg =
       configArgIdx >= 0 ? [...args][configArgIdx + 1] : undefined;
 
-    const targetInfo = getTargetInfo(targetPath);
     const info = getInfo(projectPath, targetInfo, configArg);
 
     const releaseArtifacts: Artifact[] = [];
